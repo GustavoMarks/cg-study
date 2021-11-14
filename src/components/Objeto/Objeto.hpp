@@ -6,14 +6,13 @@
 class Objeto
 {
 private:
-  static int id;
-  std::vector<Ponto> pontos;
-  std::vector<Aresta> arestas;
   std::vector<Face> faces;
 
 public:
+  static int id;
   Objeto(
-      std::vector<Ponto> pontos,
-      std::vector<Aresta> arestas,
+      int id,
       std::vector<Face> faces);
+  
+  int getId();
 };

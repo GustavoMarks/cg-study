@@ -7,5 +7,5 @@ class IDController {
 
     public:
         IDController();
-        generateNewUID();
-}
+        int generateNewUID();
+};

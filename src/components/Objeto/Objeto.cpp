@@ -1,13 +1,16 @@
 #include "Objeto.hpp"
 #include <vector>
 
+using namespace std;
+
 Objeto::Objeto(
-    std::vector<Ponto> pontos,
-    std::vector<Aresta> arestas,
+    int id,
     std::vector<Face> faces)
 {
-  this->pontos = pontos;
-  this->arestas = arestas;
   this->faces = faces;
-  // faltando id
+  this->id = id;
+}
+
+int Objeto::getId(){
+  return this->id;
 }
