@@ -75,7 +75,7 @@ int main() {
 
     Objeto* cubo3d = new Objeto(idController->generateNewUID(), {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12});
 
-    cout << "Cudo criado, id: " << cubo3d->getId() << endl;
+    cout << "Cubo criado, id: " << cubo3d->getId() << endl;
 
     return 0;
 }
