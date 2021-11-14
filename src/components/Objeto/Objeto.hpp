@@ -9,7 +9,7 @@ private:
   std::vector<Face> faces;
 
 public:
-  static int id;
+  int id;
   Objeto(
       int id,
       std::vector<Face> faces);
