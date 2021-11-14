@@ -3,9 +3,9 @@
 
 class IDController {
     private:
-        static int nextGlobalId;
+        int nextGlobalId;
 
     public:
         IDController();
-        generateNewUID();
-}
+        int generateNewUID();
+};
