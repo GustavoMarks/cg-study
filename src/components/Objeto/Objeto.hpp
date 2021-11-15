@@ -6,13 +6,17 @@
 class Objeto
 {
 private:
-  std::vector<Face> faces;
 
 public:
   int id;
+  std::vector<Face> faces;
+  
   Objeto(
       int id,
       std::vector<Face> faces);
+  Objeto(int id);
+
+  friend std::ostream& operator<<(std::ostream& os, Objeto& obj);
 
   int getId();
   void criarCurvaBezier(

@@ -14,6 +14,49 @@ Objeto::Objeto(
   this->id = id;
 }
 
+Objeto::Objeto(int id)
+{
+  this->id = id;
+}
+
+std::ostream &operator<<(std::ostream &os, Objeto &obj)
+{
+  os << "Objeto id = " << obj.id << endl;
+  os << "-Faces: " << endl;
+
+  int i = 0;
+  for (auto it = obj.faces.begin(); it != obj.faces.end(); it++, i++)
+  {
+    Aresta a0 = get<0>(*it);
+    Ponto p0_a0 = get<0>(a0);
+    Ponto p1_a0 = get<1>(a0);
+
+    Aresta a1 = get<1>(*it);
+    Ponto p0_a1 = get<0>(a1);
+    Ponto p1_a1 = get<1>(a1);
+
+    Aresta a2 = get<2>(*it);
+    Ponto p0_a2 = get<0>(a2);
+    Ponto p1_a2 = get<1>(a2);
+
+    os << "--Face " << i << ": " << endl;
+
+    os << "---Aresta 1: " << endl;
+    os << "----Vertice 1: " << p0_a0 << endl;
+    os << "----Vertice 2: " << p1_a0 << endl;
+
+    os << "---Aresta 2: " << endl;
+    os << "----Vertice 1: " << p0_a1 << endl;
+    os << "----Vertice 2: " << p0_a1 << endl;
+
+    os << "---Aresta 3: " << endl;
+    os << "----Vertice 1: " << p0_a2 << endl;
+    os << "----Vertice 2: " << p0_a2 << endl;
+  }
+
+  return os;
+}
+
 int Objeto::getId()
 {
   return this->id;
