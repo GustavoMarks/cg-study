@@ -13,6 +13,11 @@ public:
   Objeto(
       int id,
       std::vector<Face> faces);
-  
+
   int getId();
+  void criarCurvaBezier(
+      Ponto p0,
+      Ponto p1,
+      Ponto p2,
+      Ponto p3);
 };
