@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Objeto.hpp"
 #include "../CurvasParametricas/CurvasParametricas.hpp"
 #include <vector>
@@ -39,19 +40,20 @@ std::ostream &operator<<(std::ostream &os, Objeto &obj)
     Ponto p0_a2 = get<0>(a2);
     Ponto p1_a2 = get<1>(a2);
 
+    os << "--------------------" << endl;
     os << "--Face " << i << ": " << endl;
 
     os << "---Aresta 1: " << endl;
-    os << "----Vertice 1: " << p0_a0 << endl;
-    os << "----Vertice 2: " << p1_a0 << endl;
+    os << "----Vertice 1: " << endl << p0_a0 << endl;
+    os << "----Vertice 2: " << endl << p1_a0 << endl;
 
     os << "---Aresta 2: " << endl;
-    os << "----Vertice 1: " << p0_a1 << endl;
-    os << "----Vertice 2: " << p0_a1 << endl;
+    os << "----Vertice 1: " << endl << p0_a1 << endl;
+    os << "----Vertice 2: " << endl << p0_a1 << endl;
 
     os << "---Aresta 3: " << endl;
-    os << "----Vertice 1: " << p0_a2 << endl;
-    os << "----Vertice 2: " << p0_a2 << endl;
+    os << "----Vertice 1: " << endl << p0_a2 << endl;
+    os << "----Vertice 2: " << endl << p0_a2 << endl;
   }
 
   return os;
@@ -68,8 +70,8 @@ void Objeto::criarCurvaBezier(
     Ponto p2,
     Ponto p3)
 {
-  int num_paralelos = 20;
-  int num_meridianos = 20;
+  int num_paralelos = 4;
+  int num_meridianos = 4;
 
   // preenchendo os vertices
   std::vector<Ponto> vertices;
@@ -95,11 +97,10 @@ void Objeto::criarCurvaBezier(
 
   // preenchendo as faces com arestas no sentido anti-horario
   std::vector<Face> faces;
-  int num_quadrados = (num_meridianos - 1) * (num_paralelos - 1);
   // cada quadrado tem duas faces triangulares
-  for (int i = 0; i < num_quadrados; i++)
+  for (int i = 0; i < num_paralelos - 1; i++)
   {
-    for (int j = num_meridianos * i; j < (num_meridianos * i + 1) - 1; j++)
+    for (int j = num_meridianos * i; j < num_meridianos * i + num_meridianos - 1; j++)
     {
       Ponto p_esq_inf = vertices[j];
       Ponto p_dir_inf = vertices[j + 1];
