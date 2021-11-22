@@ -10,7 +10,8 @@ private:
 public:
   int id;
   std::vector<Face> faces;
-  
+
+  Objeto();
   Objeto(
       int id,
       std::vector<Face> faces);

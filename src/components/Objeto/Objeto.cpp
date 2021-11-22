@@ -22,6 +22,10 @@ Objeto::Objeto(int id)
   this->id = id;
 }
 
+Objeto::Objeto(){
+// Função constructor default deve ser definida para que a classe seja extendida
+}
+
 std::ostream &operator<<(std::ostream &os, Objeto &obj)
 {
   os << "Objeto id = " << obj.id << endl;
