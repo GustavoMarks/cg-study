@@ -6,6 +6,7 @@
 using namespace std;
 
 Cubo::Cubo(double side, int id)
+: Objeto(id)
 {
     Ponto p1{{0, 0, 0}};
     Ponto p2{{side, 0, 0}};
@@ -64,6 +65,5 @@ Cubo::Cubo(double side, int id)
     Face f11 = make_tuple(a17, a16, a15);
     Face f12 = make_tuple(a16, a6, a3);
 
-    this->id = id;
     this->faces = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12};
 }

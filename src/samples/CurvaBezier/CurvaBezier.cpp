@@ -27,6 +27,7 @@ double CurvaBezier::b_4(double t)
 }
 
 CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto p1, Ponto p2, Ponto p3, int id)
+: Objeto(id)
 {
 	// preenchendo os vertices
 	vector<Ponto> vertices;
