@@ -20,11 +20,6 @@ public:
   friend std::ostream& operator<<(std::ostream& os, Objeto& obj);
 
   int getId();
-  void criarCurvaBezier(
-      Ponto p0,
-      Ponto p1,
-      Ponto p2,
-      Ponto p3);
   void transladar(Ponto t);
   Ponto transladar_ponto(Eigen::MatrixXd m, Ponto p);
   Aresta transladar_aresta(Eigen::MatrixXd m, Aresta &a);

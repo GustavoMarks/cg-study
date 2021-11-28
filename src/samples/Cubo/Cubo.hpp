@@ -1,4 +1,3 @@
-#include "../../components/Objeto/Objeto.hpp"
 
 class Cubo : public Objeto
 {

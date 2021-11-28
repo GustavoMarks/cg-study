@@ -1,4 +1,4 @@
-#include "Cubo.hpp"
+#include "../samples.hpp"
 #include "../../components/Ponto.hpp"
 #include "../../components/Aresta.hpp"
 #include "../../components/Face.hpp"
