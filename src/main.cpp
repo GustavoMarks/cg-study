@@ -2,6 +2,7 @@
 
 #include "./samples/samples.hpp"
 #include "./helpers/IDController/IDController.hpp"
+#include "./helpers/Window/Window.hpp"
 
 using namespace std;
 
@@ -20,6 +21,14 @@ int main()
     Ponto p4{{2.0, 3.0, 1.0}};
     CurvaBezier *jarro = new CurvaBezier(6, 6, p1, p2, p3, p4, idController->generateNewUID());
     cout << "Criado novo jarro de id: " << jarro->getId() << endl;
+
+    // Abrindo uma janela com Open GL
+    Window w(800, 600, "CG Study");
+
+    while (!w.shouldClose())
+    {
+        w.update();
+    }
 
     return 0;
 }
