@@ -130,3 +130,8 @@ void Objeto::transladar_face(Eigen::MatrixXd m, std::vector<Face>::iterator it)
   Aresta &a2 = get<2>(*it);
   a2 = this->transladar_aresta(m, a2);
 }
+
+void Objeto::concat(Objeto objeto){
+  vector<Face> newFaces = objeto.faces;
+  faces.insert(faces.end(), newFaces.begin(), newFaces.end());
+}

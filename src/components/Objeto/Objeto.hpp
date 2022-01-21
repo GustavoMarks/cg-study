@@ -23,4 +23,5 @@ public:
   Ponto transladar_ponto(Eigen::MatrixXd m, Ponto p);
   Aresta transladar_aresta(Eigen::MatrixXd m, Aresta &a);
   void transladar_face(Eigen::MatrixXd m, std::vector<Face>::iterator it);
+  void concat(Objeto objeto);
 };
