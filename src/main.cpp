@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
     IDController *idController = new IDController();
 
@@ -23,12 +23,7 @@ int main()
     cout << "Criado novo jarro de id: " << jarro->getId() << endl;
 
     // Abrindo uma janela com Open GL
-    Window w(800, 600, "CG Study");
-
-    while (!w.shouldClose())
-    {
-        w.update();
-    }
+    Window w(argc, argv, 800, 600, "CG Study");
 
     return 0;
 }

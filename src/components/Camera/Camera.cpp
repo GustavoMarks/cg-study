@@ -6,11 +6,11 @@ Camera::Camera(Ponto eye, Ponto look_at, Ponto up) : eye(eye), look_at(look_at),
 
 Eigen::Matrix4d Camera::gerar_matriz_world_to_cam()
 {
-  Eigen::Vector3d w = look_at - eye;
+  Eigen::VectorXd w = look_at - eye;
   w.normalize();
-  Eigen::Vector3d u = up * w;
+  Eigen::VectorXd u = up * w;
   u.normalize();
-  Eigen::Vector3d v = w * u;
+  Eigen::VectorXd v = w * u;
 
   Eigen::Matrix4d m_world_to_cam{
       {u.x(), u.y(), u.z(), 0},
