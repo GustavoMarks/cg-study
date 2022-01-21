@@ -55,7 +55,7 @@ Cubo::Cubo(double side, int id)
 
     // Faces da esquerda
     Face f7 = make_tuple(a1, a8, a9);
-    Face f8 = make_tuple(a8, a7, a8);
+    Face f8 = make_tuple(a8, a6, a7);
 
     // Faces do topo
     Face f9 = make_tuple(a10, a11, a9);
