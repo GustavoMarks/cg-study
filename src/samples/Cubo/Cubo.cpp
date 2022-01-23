@@ -6,7 +6,7 @@
 using namespace std;
 
 Cubo::Cubo(double side, int id)
-: Objeto(id)
+: Malha(id)
 {
     Ponto p1{{0, 0, 0}};
     Ponto p2{{side, 0, 0}};

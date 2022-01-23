@@ -1,3 +1,3 @@
-#include "../components/Objeto/Objeto.hpp"
+#include "../components/Malha/Malha.hpp"
 #include "./Cubo/Cubo.hpp"
 #include "./CurvaBezier/CurvaBezier.hpp"

@@ -4,6 +4,8 @@ Camera::Camera(Ponto eye, Ponto look_at, Ponto up) : eye(eye), look_at(look_at),
 {
 }
 
+Camera::Camera() {}
+
 Eigen::Matrix4d Camera::gerar_matriz_world_to_cam()
 {
   Eigen::VectorXd w = look_at - eye;

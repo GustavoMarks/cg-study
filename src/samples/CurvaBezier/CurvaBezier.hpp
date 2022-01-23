@@ -1,6 +1,6 @@
 #include "../../components/Ponto.hpp"
 
-class CurvaBezier : public Objeto
+class CurvaBezier : public Malha
 {
 private:
 	double b_1(double t);

@@ -1,5 +1,5 @@
 
-class Cubo : public Objeto
+class Cubo : public Malha
 {
 private:
 

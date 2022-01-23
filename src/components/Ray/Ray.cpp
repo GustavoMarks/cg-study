@@ -8,4 +8,5 @@ Ray::Ray(Ponto Eye, Ponto plc)
 
 bool Ray::computarIntersecao(Cenario *cenario)
 {
+  return true;
 }
