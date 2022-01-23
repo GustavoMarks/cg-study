@@ -10,5 +10,4 @@ public:
   Camera cam;
   vector<Objeto> objs;
   Cenario(Camera cam, vector<Objeto> objs);
-  void rayCasting(float d, int H, int W, int nlinhas, int ncolunas);
 };

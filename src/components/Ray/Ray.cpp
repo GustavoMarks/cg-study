@@ -6,7 +6,7 @@ Ray::Ray(Ponto Eye, Ponto plc)
   this->plc = plc;
 }
 
-bool Ray::computarIntersecao(Cenario *cenario)
+bool Ray::computarIntersecao(Cenario cenario)
 {
   return true;
 }
