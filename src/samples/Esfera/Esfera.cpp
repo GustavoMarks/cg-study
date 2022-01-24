@@ -1,20 +1,17 @@
 #include "../samples.hpp"
 
-Esfera::Esfera()
+Esfera::Esfera(int id) : Objeto(id)
 {
 }
 
-Esfera::Esfera(Ponto p0, Ponto centro, float r)
+Esfera::Esfera(int id, Ponto p0, Ponto centro, float r) : Objeto(id)
 {
   this->p0 = p0;
   this->centro = centro;
   this->r = r;
 }
-bool Esfera::hitRay(Ray raio, float& t_min)
+bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
-  VectorXd p0 = raio.p0;
-  VectorXd d = raio.d;
-
   VectorXd v = p0 - d;
   float a = d.dot(d);
   float b = v.dot(d);

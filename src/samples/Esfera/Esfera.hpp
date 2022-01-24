@@ -1,4 +1,3 @@
-
 class Esfera : public Objeto
 {
 private:
@@ -6,7 +5,7 @@ private:
   Ponto centro; // ponto do centro da esfera
   float r; // raio da esfera
 public:
-  Esfera();
-  Esfera(Ponto p0, Ponto centro, float r);
-  bool hitRay(Ray raio, float& t_min);
+  Esfera(int id);
+  Esfera(int id, Ponto p0, Ponto centro, float r);
+  bool hitRay(VectorXd p0, VectorXd d, float& t_min);
 };

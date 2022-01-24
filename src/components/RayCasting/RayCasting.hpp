@@ -1,4 +1,3 @@
-#include "../Cenario/Cenario.hpp"
 #include "../../helpers/RBG/RGB.hpp"
 #include "../Ray/Ray.hpp"
 
