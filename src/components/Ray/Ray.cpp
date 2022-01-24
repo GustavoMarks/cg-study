@@ -1,9 +1,10 @@
 #include "Ray.hpp"
 
-Ray::Ray(Ponto Eye, Ponto plc)
+Ray::Ray(Ponto p0, Ponto d)
 {
-  this->Eye = Eye;
-  this->plc = plc;
+  this->p0 = p0;
+  d.normalize();
+  this->d = d;
 }
 
 bool Ray::computarIntersecao(Cenario cenario)
