@@ -1,5 +1,6 @@
 #include <iostream>
 #include <eigen-3.4.0/Eigen/Dense>
+#include <math.h>
 #include "Objeto.hpp"
 
 #define PI 3.14159265
@@ -36,6 +37,47 @@ void Objeto::transladar(Ponto t)
     v << p.x(), p.y(), p.z(), 1;
 
     v = m * v;
+    Ponto updatePoint{{v(0), v(1), v(2)}};
+
+    updatedPointsList.push_back(updatePoint);
+  }
+
+  this->pontos = updatedPointsList;
+}
+
+void Objeto::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang){
+  // Matriz para rotação em torno do eixo X
+  // OBS.: Entrada das funções é em radianos, fazendo conversão dos parâmentros
+  Eigen::Matrix3d mAroundX;
+  mAroundX << 1, 0, 0,
+  0, cos(aroundX_ang * PI / 180.0), (-1) * sin(aroundX_ang * PI / 180.0),
+  0, sin(aroundX_ang * PI / 180.0), cos(aroundX_ang * PI / 180.0);
+
+  // Matriz para rotação em torno do eixo y
+  Eigen::Matrix3d mAroundY;
+  mAroundX << cos(aroundY_ang * PI / 180.0), 0, sin(aroundY_ang * PI / 180.0),
+  0, 1, 1,
+  (-1) * sin(aroundY_ang * PI / 180.0), 0, cos(aroundY_ang * PI / 180.0);
+
+  // Matriz para rotação em torno do eixo Z
+  Eigen::Matrix3d mAroundZ;
+  mAroundX << cos(aroundX_ang * PI / 180.0), -(1) * sin(aroundX_ang * PI / 180.0), 0,
+  sin(aroundX_ang * PI / 180.0), cos(aroundX_ang * PI / 180.0), 0,
+  0, 0, 1;
+
+  // Gerando novos vertices com a rotação em torno dos três eixos
+  vector<Ponto> updatedPointsList;
+  int i;
+  for (i = 0; i < this->pontos.size(); i++)
+  {
+    Eigen::Vector3d v;
+    Ponto p = this->pontos.at(i);
+
+    v << p.x(), p.y(), p.z();
+
+    v = mAroundX * v;
+    v = mAroundY * v;
+    v = mAroundZ * v;
     Ponto updatePoint{{v(0), v(1), v(2)}};
 
     updatedPointsList.push_back(updatePoint);

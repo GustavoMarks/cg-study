@@ -13,5 +13,6 @@ public:
   Objeto(int id, std::vector<Ponto> pontos);
 
   void transladar(Ponto t);
+  void rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang);
   bool hitRay(); // TODO
 };

@@ -18,4 +18,5 @@ public:
 
 	// Sobreescrevendo funções para atualização da estrutura de pontos para face
 	void transladar(Ponto t);
+	void rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang);
 };

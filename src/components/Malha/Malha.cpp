@@ -139,3 +139,9 @@ void Malha::transladar(Ponto p){
 	Objeto::transladar(p);
 	this->updateStruct(this->pontos);
 }
+
+void Malha::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang){
+	this->pontos = this->getStruct();
+	Objeto::rotacionar(aroundX_ang, aroundY_ang, aroundZ_ang);
+	this->updateStruct(this->pontos);
+}
