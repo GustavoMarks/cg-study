@@ -145,3 +145,9 @@ void Malha::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_an
 	Objeto::rotacionar(aroundX_ang, aroundY_ang, aroundZ_ang);
 	this->updateStruct(this->pontos);
 }
+
+void Malha::escalar(double sx, double sy, double sz){
+	this->pontos = this->getStruct();
+	Objeto::escalar(sx, sy, sz);
+	this->updateStruct(this->pontos);
+}

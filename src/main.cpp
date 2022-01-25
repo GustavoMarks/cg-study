@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 
     jarro->transladar(p4);
     jarro->rotacionar(45, 0, 0);
+    jarro->escalar(2, 2, 2);
 
     // Abrindo uma janela com Open GL
     Window w(argc, argv, 800, 600, "CG Study");
