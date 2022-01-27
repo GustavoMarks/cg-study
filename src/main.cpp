@@ -14,6 +14,8 @@ int main(int argc, char **argv)
     Cubo *cubo = new Cubo(3.0, idController->generateNewUID());
     cout << "Criado novo cubo de id: " << cubo->id << endl;
 
+    cubo->cisalhar(45);
+
     // Criando jarro com 6 meridianos e 6 paralelos
     Ponto p1{{1.0, 0.0, 0.0}};
     Ponto p2{{3.5, 0.5, 0.0}};

@@ -56,13 +56,13 @@ void Objeto::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_a
 
   // Matriz para rotação em torno do eixo y
   Eigen::Matrix3d mAroundY;
-  mAroundX << cos(aroundY_ang * PI / 180.0), 0, sin(aroundY_ang * PI / 180.0),
+  mAroundY << cos(aroundY_ang * PI / 180.0), 0, sin(aroundY_ang * PI / 180.0),
       0, 1, 1,
       (-1) * sin(aroundY_ang * PI / 180.0), 0, cos(aroundY_ang * PI / 180.0);
 
   // Matriz para rotação em torno do eixo Z
   Eigen::Matrix3d mAroundZ;
-  mAroundX << cos(aroundX_ang * PI / 180.0), -(1) * sin(aroundX_ang * PI / 180.0), 0,
+  mAroundZ << cos(aroundX_ang * PI / 180.0), -(1) * sin(aroundX_ang * PI / 180.0), 0,
       sin(aroundX_ang * PI / 180.0), cos(aroundX_ang * PI / 180.0), 0,
       0, 0, 1;
 
@@ -122,6 +122,36 @@ void Objeto::escalar(double sx, double sy, double sz)
                              updatedFirstPoint.z() - auxPoint.z()}};
 
   this->transladar(translateBackVector);
+  this->pontos = updatedPointsList;
+}
+
+// Cisalhamento acontece com transformação em direção ao eixo X com plano padrão xyz
+// Para outros planos e outras direções de deformação aplicar rotação prévia
+void Objeto::cisalhar(double ang_onX_planXYZ)
+{
+  // Matriz de cisalhamento
+  // OBS.: Entrada das funções é em radianos, fazendo conversão dos parâmentros
+  Eigen::Matrix3d c;
+  c << 1, tan(ang_onX_planXYZ * PI / 180.0), 0,
+      0, 1, 0,
+      0, 0, 1;
+
+  // Gerando novos vertices com a rotação em torno dos três eixos
+  vector<Ponto> updatedPointsList;
+  int i;
+  for (i = 0; i < this->pontos.size(); i++)
+  {
+    Eigen::Vector3d v;
+    Ponto p = this->pontos.at(i);
+
+    v << p.x(), p.y(), p.z();
+
+    v = c * v;
+    Ponto updatePoint{{v(0), v(1), v(2)}};
+
+    updatedPointsList.push_back(updatePoint);
+  }
+
   this->pontos = updatedPointsList;
 }
 

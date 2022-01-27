@@ -96,7 +96,7 @@ void Malha::updateStruct(vector<Ponto> newPoints)
 {
 	vector<Face> newFaces;
 
-	stack<Ponto> visitedPoints; 
+	stack<Ponto> visitedPoints;
 	int i;
 	for (i = 0; i < newPoints.size(); i++)
 	{
@@ -134,20 +134,30 @@ void Malha::concat(Malha malha)
 	faces.insert(faces.end(), newFaces.begin(), newFaces.end());
 }
 
-void Malha::transladar(Ponto p){
+void Malha::transladar(Ponto p)
+{
 	this->pontos = this->getStruct();
 	Objeto::transladar(p);
 	this->updateStruct(this->pontos);
 }
 
-void Malha::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang){
+void Malha::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang)
+{
 	this->pontos = this->getStruct();
 	Objeto::rotacionar(aroundX_ang, aroundY_ang, aroundZ_ang);
 	this->updateStruct(this->pontos);
 }
 
-void Malha::escalar(double sx, double sy, double sz){
+void Malha::escalar(double sx, double sy, double sz)
+{
 	this->pontos = this->getStruct();
 	Objeto::escalar(sx, sy, sz);
+	this->updateStruct(this->pontos);
+}
+
+void Malha::cisalhar(double ang_onX_planXYZ)
+{
+	this->pontos = this->getStruct();
+	Objeto::cisalhar(ang_onX_planXYZ);
 	this->updateStruct(this->pontos);
 }
