@@ -141,10 +141,17 @@ void Malha::transladar(Ponto p)
 	this->updateStruct(this->pontos);
 }
 
-void Malha::rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang)
+void Malha::rotacionar(int axis, double ang)
 {
 	this->pontos = this->getStruct();
-	Objeto::rotacionar(aroundX_ang, aroundY_ang, aroundZ_ang);
+	Objeto::rotacionar(axis, ang);
+	this->updateStruct(this->pontos);
+}
+
+void Malha::rotacionar(Ponto P1, Ponto P2, double ang)
+{
+	this->pontos = this->getStruct();
+	Objeto::rotacionar(P1, P2, ang);
 	this->updateStruct(this->pontos);
 }
 
@@ -159,5 +166,19 @@ void Malha::cisalhar(double ang_onX_planXYZ)
 {
 	this->pontos = this->getStruct();
 	Objeto::cisalhar(ang_onX_planXYZ);
+	this->updateStruct(this->pontos);
+}
+
+void Malha::refletir(int plan)
+{
+	this->pontos = this->getStruct();
+	Objeto::refletir(plan);
+	this->updateStruct(this->pontos);
+}
+
+void Malha::refletir(Ponto A, Ponto B, Ponto C)
+{
+	this->pontos = this->getStruct();
+	Objeto::refletir(A, B, C);
 	this->updateStruct(this->pontos);
 }

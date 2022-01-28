@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     cout << "Criado novo jarro de id: " << jarro->id << endl;
 
     jarro->transladar(p4);
-    jarro->rotacionar(45, 0, 0);
+    jarro->rotacionar(1, 45);
     jarro->escalar(2, 2, 2);
 
     // Abrindo uma janela com Open GL

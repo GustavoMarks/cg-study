@@ -18,7 +18,10 @@ public:
 
 	// Sobreescrevendo funções para atualização da estrutura de pontos para face
 	void transladar(Ponto t);
-	void rotacionar(double aroundX_ang, double aroundY_ang, double aroundZ_ang);
+	void rotacionar(int axis, double ang);
+	void rotacionar(Ponto P1, Ponto P2, double ang);
 	void escalar(double sx, double sy, double sz);
 	void cisalhar(double ang_onX_planXYZ);
+	void refletir(int plan);
+	void refletir(Ponto A, Ponto B, Ponto C);
 };
