@@ -10,12 +10,18 @@ using namespace std;
 Objeto::Objeto(int id)
 {
   this->id = id;
+  this->ka = RGBIntesity();
+  this->kd = RGBIntesity();
+  this->ks = RGBIntesity();
 }
 
 Objeto::Objeto(int id, std::vector<Ponto> pontos)
 {
   this->pontos = pontos;
   this->id = id;
+  this->ka = RGBIntesity();
+  this->kd = RGBIntesity();
+  this->ks = RGBIntesity();
 }
 
 void Objeto::transladar(Ponto t)
@@ -336,4 +342,12 @@ void Objeto::refletir(Ponto A, Ponto B, Ponto C)
 bool Objeto::hitRay()
 {
   return false;
+}
+
+void Objeto::setMaterial(RGBIntesity ka, RGBIntesity kd, RGBIntesity ks, double m)
+{
+  this->ka = ka;
+  this->kd = kd;
+  this->ks = ks;
+  this->m = m < 0 ? 1 : m;
 }
