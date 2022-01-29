@@ -7,6 +7,7 @@ Plano::Plano(int id) : Objeto(id)
 Plano::Plano(int id, Ponto p0, VectorXd n) : Objeto(id)
 {
   this->p0 = p0;
+  n.normalize();
   this->n = n;
 }
 

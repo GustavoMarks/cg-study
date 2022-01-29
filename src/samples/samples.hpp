@@ -4,3 +4,4 @@
 #include "./Esfera/Esfera.hpp"
 #include "./Plano/Plano.hpp"
 #include "./Cilindro/Cilindro.hpp"
+#include "./Cone/Cone.hpp"
