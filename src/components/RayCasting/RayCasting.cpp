@@ -18,6 +18,7 @@ RGB* rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncoluna
       Ray raio(cenario.cam.eye, plc);
       bool intersecao = raio.computarIntersecao(cenario);
 
+      // TODO: Calcular cor e luminosidade
       if (intersecao)
       {
         canvas[l][c].r = 0;

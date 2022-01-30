@@ -110,7 +110,7 @@ void Objeto::rotacionar(Ponto P1, Ponto P2, double ang)
   Ponto P = P2 - P1;
   Eigen::Vector3d P3d;
   P3d << P.x(), P.y(), P.z();
-  k << P / sqrt((P.x() * P.x()) + (P.y() * P.y()) + (P.z() * P.z()));
+  k << P / P.norm();
 
   // Encontrando sistema de coordenadas
   Eigen::Vector3d w;
@@ -118,7 +118,7 @@ void Objeto::rotacionar(Ponto P1, Ponto P2, double ang)
   Eigen::Vector3d q;
   q = w.cross(k);
   Eigen::Vector3d i;
-  i << q / sqrt((q.x() * q.x()) + (q.y() * q.y()) + (q.z() * q.z()));
+  i << q / q.norm();
   Eigen::Vector3d j;
   j = k.cross(i);
 
@@ -312,7 +312,7 @@ void Objeto::refletir(Ponto A, Ponto B, Ponto C)
   Eigen::Vector3d N;
   N = pbT3d.cross(pcT3d);
   Eigen::Vector3d n;
-  n = N / sqrt((N.x() * N.x()) + (N.y() * N.y()) + (N.z() * N.z()));
+  n = N / N.norm();
   Eigen::Vector4d n4d;
   n4d << n(0), n(1), n(2), 1;
   Eigen::Matrix4d I = Eigen::Matrix4d::Identity(4, 4);
