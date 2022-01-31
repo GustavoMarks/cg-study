@@ -24,4 +24,7 @@ public:
 	void cisalhar(double ang_onX_planXYZ);
 	void refletir(int plan);
 	void refletir(Ponto A, Ponto B, Ponto C);
+
+	// Sobrescrevendo função que calcula interseção de um raio com faces da malha
+  bool hitRay(VectorXd p0, VectorXd d, float &t_min);
 };

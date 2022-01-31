@@ -182,3 +182,67 @@ void Malha::refletir(Ponto A, Ponto B, Ponto C)
 	Objeto::refletir(A, B, C);
 	this->updateStruct(this->pontos);
 }
+
+bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
+{
+	int num_faces = (int)this->faces.size();
+	float a, f, u, v;
+	VectorXd h, s, q;
+	std::vector<float> intersecoes;
+
+	for (int i = 0; i < num_faces; i++)
+	{
+		// TODO: Ver questão dos vertices em sentido anti-horário
+
+		// Obtendo os vertices da face
+		Aresta a0 = std::get<0>(this->faces[i]);
+		Aresta a1 = std::get<1>(this->faces[i]);
+		// Aresta a2 = std::get<2>(this->faces[i]);
+		Ponto v0 = std::get<0>(a0);
+		Ponto v1 = std::get<1>(a0);
+		Ponto v2;
+		if (std::get<0>(a1) != v0)
+		{
+			v2 = std::get<0>(a1);
+		}
+		else
+		{
+			v2 = std::get<1>(a1);
+		}
+
+		VectorXd aresta1 = v1 - v0;
+		VectorXd aresta2 = v2 - v0;
+		h = d * aresta2;
+		a = aresta1.dot(h);
+
+		float episilon = 0.0001;
+
+		if (a < episilon || std::abs(a) < episilon)
+			continue;
+
+		f = 1.0f / a;
+		s = p0 - v0;
+		u = f * s.dot(h);
+		if (u < 0.0 || u > 1.0)
+			continue;
+
+		q = s * aresta1;
+		v = f * d.dot(q);
+		if (v < 0.0 || u + v > 1.0)
+			continue;
+
+		float t_int = f * aresta2.dot(q);
+		intersecoes.push_back(t_int);
+	}
+
+	int num_intersecoes = (int)intersecoes.size();
+	if (num_intersecoes == 0)
+		return false;
+
+	t_min = intersecoes[0];
+	for (int i = 1; i < num_intersecoes; i++)
+		if (intersecoes[i] < t_min)
+			t_min = intersecoes[i];
+
+	return true;
+}
