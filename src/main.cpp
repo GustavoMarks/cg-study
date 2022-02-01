@@ -32,27 +32,27 @@ int main(int argc, char **argv)
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
 
-    Eigen::Vector3d u{{0, 3, 0}};
+    Eigen::VectorXd u{{0, 1, 0}};
     Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 4, 4);
 
     Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
 
     Cubo *cubo2 = new Cubo(2.0, idController->generateNewUID());
 
-    Ponto eye{{3, 3, 3}};
+    Ponto eye{{0, -3, 8}};
     Ponto la{{3, 0, 0}};
     Ponto lu{{10, 10, 0}};
 
     Camera *cam = new Camera(eye, la, lu);
     vector<Objeto *> objList;
-    objList.push_back(cubo2);
+    // objList.push_back(cubo2);
     // objList.push_back(jarro);
     // objList.push_back(esf);
-    // objList.push_back(cil);
+    objList.push_back(cil);
     // objList.push_back(con);
     Cenario *cena = new Cenario(*cam, objList);
 
-    RGB **canvas = rayCasting(*cena, 80, 600, 800, 600, 800);
+    RGB **canvas = rayCasting(*cena, 80, 800, 800, 600, 800);
     // Abrindo uma janela com Open GL
     Window w(argc, argv, 800, 600, "CG Study", canvas);
 
