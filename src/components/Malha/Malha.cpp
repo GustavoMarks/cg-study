@@ -194,6 +194,8 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 	{
 		// TODO: Ver questão dos vertices em sentido anti-horário
 
+		cout << "Método filho chamado..." << endl;
+
 		// Obtendo os vertices da face
 		Aresta a0 = std::get<0>(this->faces[i]);
 		Aresta a1 = std::get<1>(this->faces[i]);

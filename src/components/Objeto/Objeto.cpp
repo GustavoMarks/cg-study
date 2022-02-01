@@ -162,7 +162,7 @@ void Objeto::rotacionar(Ponto P1, Ponto P2, double ang)
 
 void Objeto::escalar(double sx, double sy, double sz)
 {
-  // Matriz de escola
+  // Matriz de escalar
   Eigen::Matrix3d mScala;
   mScala << sx, 0, 0,
       0, sy, 0,
@@ -339,9 +339,31 @@ void Objeto::refletir(Ponto A, Ponto B, Ponto C)
   this->pontos = updatedPointsList;
 }
 
-bool Objeto::hitRay()
+bool Objeto::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
+  // cout << "método pai chamado..." << endl;
   return false;
+}
+
+void Objeto::cameraTransform(Eigen::Matrix4d mwc)
+{
+  // Gerando novos vertices
+  vector<Ponto> updatedPointsList;
+  int i;
+  for (i = 0; i < this->pontos.size(); i++)
+  {
+    Eigen::Vector4d v;
+    Ponto p = this->pontos.at(i);
+
+    v << p.x(), p.y(), p.z(), 1;
+
+    v = mwc * v;
+    Ponto updatePoint{{v(0), v(1), v(2)}};
+
+    updatedPointsList.push_back(updatePoint);
+  }
+
+  this->pontos = updatedPointsList;
 }
 
 void Objeto::setMaterial(RGBIntesity ka, RGBIntesity kd, RGBIntesity ks, double m)

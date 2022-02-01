@@ -8,17 +8,24 @@ Camera::Camera() {}
 
 Eigen::Matrix4d Camera::gerar_matriz_world_to_cam()
 {
-  Eigen::VectorXd w = look_at - eye;
+  Eigen::Vector3d lat3d;
+  lat3d << look_at.x(), look_at.y(), look_at.z();
+  Eigen::Vector3d eye3d;
+  eye3d << eye.x(), eye.y(), eye.z();
+  Eigen::Vector3d up3d;
+  up3d << up.x(), up.y(), up.z();
+
+  Eigen::Vector3d w = lat3d - eye3d;
   w.normalize();
-  Eigen::VectorXd u = up * w;
+  Eigen::Vector3d u = up3d.cross(w);
   u.normalize();
-  Eigen::VectorXd v = w * u;
+  Eigen::Vector3d v = w.cross(u);
 
   Eigen::Matrix4d m_world_to_cam{
-      {u.x(), u.y(), u.z(), 0},
-      {v.x(), v.y(), v.z(), 0},
-      {w.x(), w.y(), w.z(), 0},
-      {eye.x(), eye.y(), eye.z(), 1},
+      {u.x(), u.y(), u.z(), (-1) * u.dot(eye3d)},
+      {v.x(), v.y(), v.z(), (-1) * u.dot(eye3d)},
+      {w.x(), w.y(), w.z(), (-1) * u.dot(eye3d)},
+      {0, 0, 0, 1},
   };
 
   return m_world_to_cam;

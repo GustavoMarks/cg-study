@@ -19,7 +19,8 @@ public:
   void cisalhar(double ang_onX_planXYZ);
   void refletir(int plan);
   void refletir(Ponto A, Ponto B, Ponto C);
-  bool hitRay(); // TODO
+  bool hitRay(VectorXd p0, VectorXd d, float& t_min);
+  void cameraTransform(Eigen::Matrix4d mwc);
 
   // Propriedades do material
   RGBIntesity ka = RGBIntesity(); // Coefiente para luz ambiente

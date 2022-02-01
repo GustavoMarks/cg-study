@@ -1,10 +1,28 @@
+#include <iostream>
 #include "Cenario.hpp"
 #include "../../helpers/RBG/RGB.hpp"
 
-Cenario::Cenario(Camera cam, vector<Objeto> objs)
+using namespace std;
+
+Cenario::Cenario(Camera cam, vector<Objeto*> objs)
 {
   this->cam = cam;
   this->objs = objs;
+  this->updateCamera(cam);
+}
 
-  // TODO: transformar coordenadas dos objetos para coordenadas da camera
+void Cenario::updateCamera(Camera cam)
+{
+  this->cam = cam;
+  // Transformando coordenadas dos objetos para coordenadas da camera
+  Eigen::Matrix4d mwc;
+  mwc = cam.gerar_matriz_world_to_cam();
+
+  cout << "Convertendo coordenadas dos objetos de mundo para câmera" << endl;
+
+  int i;
+  for (i = 0; i < this->objs.size(); i++)
+  {
+    this->objs.at(i)->cameraTransform(mwc);
+  }
 }

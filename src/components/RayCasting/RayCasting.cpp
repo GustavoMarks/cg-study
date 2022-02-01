@@ -1,8 +1,9 @@
 #include "RayCasting.hpp"
 
-RGB* rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
+RGB** rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
 {
-  RGB canvas[nlinhas][ncolunas];
+  RGB** canvas;
+  canvas = new RGB*[nlinhas];
 
   float deltaX = W / ncolunas;
   float deltaY = H / nlinhas;
@@ -11,6 +12,7 @@ RGB* rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncoluna
 
   for (int l = 0; l < nlinhas; l++)
   {
+    canvas[l] = new RGB[ncolunas];
     Ponto plc{{0.0, p00y - l * deltaY, -d}};
     for (int c = 0; c < ncolunas; c++)
     {
@@ -21,17 +23,17 @@ RGB* rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncoluna
       // TODO: Calcular cor e luminosidade
       if (intersecao)
       {
-        canvas[l][c].r = 0;
-        canvas[l][c].b = 0;
-        canvas[l][c].g = 0;
-      }
-      else {
         canvas[l][c].r = 200;
         canvas[l][c].b = 200;
         canvas[l][c].g = 200;
       }
+      else {
+        canvas[l][c].r = 0;
+        canvas[l][c].b = 0;
+        canvas[l][c].g = 0;
+      }
     }
   }
 
-  return *canvas;
+  return canvas;
 }

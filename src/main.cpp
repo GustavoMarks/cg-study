@@ -2,7 +2,6 @@
 
 #include "./samples/samples.hpp"
 #include "./helpers/IDController/IDController.hpp"
-#include "./helpers/Window/Window.hpp"
 
 using namespace std;
 
@@ -29,8 +28,23 @@ int main(int argc, char **argv)
     jarro->rotacionar(1, 45);
     jarro->escalar(2, 2, 2);
 
+    // Ponto po{{0.0, 0.0, 0.0}};
+    // Ponto pe{{0.0, 0.0, 3.0}};
+    // Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
+
+    Ponto eye{{0, 20, 0}};
+    Ponto la{{0, 0, 0}};
+    Ponto lu{{0, 0, 20}};
+
+    Camera *cam = new Camera(eye, la, lu);
+    vector<Objeto*> objList;
+    objList.push_back(cubo);
+    objList.push_back(jarro);
+    Cenario *cena = new Cenario(*cam, objList);
+
+    RGB **canvas = rayCasting(*cena, 10, 600, 800, 800, 600);
     // Abrindo uma janela com Open GL
-    Window w(argc, argv, 800, 600, "CG Study");
+    Window w(argc, argv, 800, 600, "CG Study", canvas);
 
     return 0;
 }

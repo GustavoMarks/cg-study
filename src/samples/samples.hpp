@@ -1,4 +1,4 @@
-#include "../components/Malha/Malha.hpp"
+#include "../helpers/Window/Window.hpp"
 #include "./Cubo/Cubo.hpp"
 #include "./CurvaBezier/CurvaBezier.hpp"
 #include "./Esfera/Esfera.hpp"
