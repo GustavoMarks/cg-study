@@ -187,14 +187,14 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
 	int num_faces = (int)this->faces.size();
 	float a, f, u, v;
-	VectorXd h, s, q;
+	Eigen::Vector3d h, s, q, p03d, d3d;
+	p03d << p0.x(), p0.y(), p0.z();
+	d3d << d.x(), d.y(), d.z();
 	std::vector<float> intersecoes;
 
 	for (int i = 0; i < num_faces; i++)
 	{
 		// TODO: Ver questão dos vertices em sentido anti-horário
-
-		cout << "Método filho chamado..." << endl;
 
 		// Obtendo os vertices da face
 		Aresta a0 = std::get<0>(this->faces[i]);
@@ -212,9 +212,16 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 			v2 = std::get<1>(a1);
 		}
 
-		VectorXd aresta1 = v1 - v0;
-		VectorXd aresta2 = v2 - v0;
-		h = d * aresta2;
+		Eigen::Vector3d v03d;
+		v03d << v0.x(), v0.y(), v0.z();
+		Eigen::Vector3d v13d;
+		v13d << v1.x(), v1.y(), v1.z();
+		Eigen::Vector3d v23d;
+		v23d << v2.x(), v2.y(), v2.z();
+
+		Eigen::Vector3d aresta1 = v13d - v03d;
+		Eigen::Vector3d aresta2 = v23d - v03d;
+		h = d3d.cross(aresta2);
 		a = aresta1.dot(h);
 
 		float episilon = 0.0001;
@@ -223,13 +230,13 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 			continue;
 
 		f = 1.0f / a;
-		s = p0 - v0;
+		s = p03d - v0;
 		u = f * s.dot(h);
 		if (u < 0.0 || u > 1.0)
 			continue;
 
-		q = s * aresta1;
-		v = f * d.dot(q);
+		q = s.cross(aresta1);
+		v = f * d3d.dot(q);
 		if (v < 0.0 || u + v > 1.0)
 			continue;
 

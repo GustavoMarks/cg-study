@@ -19,7 +19,7 @@ public:
   void cisalhar(double ang_onX_planXYZ);
   void refletir(int plan);
   void refletir(Ponto A, Ponto B, Ponto C);
-  bool hitRay(VectorXd p0, VectorXd d, float& t_min);
+  virtual bool hitRay(VectorXd p0, VectorXd d, float& t_min);
   void cameraTransform(Eigen::Matrix4d mwc);
 
   // Propriedades do material

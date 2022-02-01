@@ -1,4 +1,7 @@
 #include "RayCasting.hpp"
+#include <iostream>
+
+using namespace std;
 
 RGB** rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
 {
@@ -9,6 +12,8 @@ RGB** rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
   float deltaY = H / nlinhas;
   float p00x = -(W / 2) + (1 / 2) * deltaX;
   float p00y = (H / 2) - (1 / 2) * deltaY;
+
+  cout << "executando raycasting..." << endl;
 
   for (int l = 0; l < nlinhas; l++)
   {

@@ -28,18 +28,26 @@ int main(int argc, char **argv)
     jarro->rotacionar(1, 45);
     jarro->escalar(2, 2, 2);
 
-    // Ponto po{{0.0, 0.0, 0.0}};
-    // Ponto pe{{0.0, 0.0, 3.0}};
-    // Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
+    Ponto po{{0.0, 0.0, 0.0}};
+    Ponto pe{{0.0, 0.0, 3.0}};
+    Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
 
-    Ponto eye{{0, 20, 0}};
-    Ponto la{{0, 0, 0}};
-    Ponto lu{{0, 0, 20}};
+    Eigen::Vector3d u{{3, 3, 3}};
+    Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 4, 4);
+
+    Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
+
+    Ponto eye{{0, 80, 0}};
+    Ponto la{{10, 10, 10}};
+    Ponto lu{{20, 0, 0}};
 
     Camera *cam = new Camera(eye, la, lu);
-    vector<Objeto*> objList;
-    objList.push_back(cubo);
-    objList.push_back(jarro);
+    vector<Objeto *> objList;
+    // objList.push_back(cubo);
+    // objList.push_back(jarro);
+    objList.push_back(esf);
+    // objList.push_back(cil);
+    // objList.push_back(con);
     Cenario *cena = new Cenario(*cam, objList);
 
     RGB **canvas = rayCasting(*cena, 10, 600, 800, 800, 600);

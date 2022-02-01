@@ -341,7 +341,7 @@ void Objeto::refletir(Ponto A, Ponto B, Ponto C)
 
 bool Objeto::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
-  // cout << "método pai chamado..." << endl;
+  cout << "método pai chamado..." << endl;
   return false;
 }
 
