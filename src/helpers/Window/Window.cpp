@@ -32,9 +32,9 @@ void Window::update()
 		for (int x = 0; x < width; x++)
 		{
 			int position = (x + y * width) * 3;
-			PixelBuffer[position] = canvas[x][height - y].r;
-			PixelBuffer[position + 1] = canvas[x][height - y].g;
-			PixelBuffer[position + 2] = canvas[x][height - y].b;
+			PixelBuffer[position] = canvas[height - y - 1][x].r;
+			PixelBuffer[position + 1] = canvas[height - y - 1][x].g;
+			PixelBuffer[position + 2] = canvas[height - y - 1][x].b;
 		}
 	}
 

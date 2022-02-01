@@ -24,33 +24,35 @@ int main(int argc, char **argv)
 
     cout << "Criado novo jarro de id: " << jarro->id << endl;
 
-    jarro->transladar(p4);
-    jarro->rotacionar(1, 45);
-    jarro->escalar(2, 2, 2);
+    // jarro->transladar(p4);
+    // jarro->rotacionar(1, 45);
+    // jarro->escalar(2, 2, 2);
 
     Ponto po{{0.0, 0.0, 0.0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
 
-    Eigen::Vector3d u{{3, 3, 3}};
+    Eigen::Vector3d u{{0, 3, 0}};
     Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 4, 4);
 
     Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
 
-    Ponto eye{{0, 80, 0}};
-    Ponto la{{10, 10, 10}};
-    Ponto lu{{20, 0, 0}};
+    Cubo *cubo2 = new Cubo(2.0, idController->generateNewUID());
+
+    Ponto eye{{3, 3, 3}};
+    Ponto la{{3, 0, 0}};
+    Ponto lu{{10, 10, 0}};
 
     Camera *cam = new Camera(eye, la, lu);
     vector<Objeto *> objList;
-    // objList.push_back(cubo);
+    objList.push_back(cubo2);
     // objList.push_back(jarro);
-    objList.push_back(esf);
+    // objList.push_back(esf);
     // objList.push_back(cil);
     // objList.push_back(con);
     Cenario *cena = new Cenario(*cam, objList);
 
-    RGB **canvas = rayCasting(*cena, 10, 600, 800, 800, 600);
+    RGB **canvas = rayCasting(*cena, 80, 600, 800, 600, 800);
     // Abrindo uma janela com Open GL
     Window w(argc, argv, 800, 600, "CG Study", canvas);
 
