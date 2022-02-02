@@ -7,6 +7,35 @@ using namespace std;
 Malha::Malha(int id, std::vector<Face> faces) : Objeto(id)
 {
 	this->faces = faces;
+	vector<Ponto> pointsList;
+	pointsList.reserve(this->faces.size() * 3);
+
+	int i;
+	for (i = 0; i < this->faces.size(); i++)
+	{
+		Face f = this->faces.at(i);
+		Aresta &a0 = get<0>(f);
+		Ponto p0_a0 = get<0>(a0);
+		pointsList.push_back(p0_a0);
+
+		Ponto p1_a0 = get<1>(a0);
+		pointsList.push_back(p1_a0);
+
+		Aresta &a1 = get<1>(f);
+		Ponto p0_a1 = get<0>(a1);
+		Ponto p1_a1 = get<1>(a1);
+
+		if (p0_a0 == p0_a1)
+		{
+			pointsList.push_back(p1_a1);
+		}
+		else
+		{
+			pointsList.push_back(p0_a1);
+		}
+	}
+
+	this->pontos = pointsList;
 }
 
 Malha::Malha(int id) : Objeto(id)
@@ -95,33 +124,22 @@ vector<Ponto> Malha::getStruct()
 void Malha::updateStruct(vector<Ponto> newPoints)
 {
 	vector<Face> newFaces;
+	newFaces.reserve(this->faces.size());
 
-	stack<Ponto> visitedPoints;
 	int i;
-	for (i = 0; i < newPoints.size(); i++)
+	for (i = 2; i < newPoints.size(); i += 3)
 	{
-		Ponto p = newPoints.at(i);
-		if (visitedPoints.size() != 3)
-		{
-			visitedPoints.push(p);
-		}
-		else
-		{
-			Ponto p2 = visitedPoints.top();
-			visitedPoints.pop();
-			Ponto p1 = visitedPoints.top();
-			visitedPoints.pop();
-			Ponto p0 = visitedPoints.top();
-			visitedPoints.pop();
+		Ponto p2 = newPoints.at(i);
+		Ponto p1 = newPoints.at(i - 1);
+		Ponto p0 = newPoints.at(i - 2);
 
-			Aresta a0 = make_pair(p0, p1);
-			Aresta a1 = make_pair(p1, p2);
-			Aresta a2 = make_pair(p2, p0);
+		Aresta a0 = make_pair(p0, p1);
+		Aresta a1 = make_pair(p1, p2);
+		Aresta a2 = make_pair(p2, p0);
 
-			// TODO: verificar ordenação em sentido anti-horário
-			Face nexFace = make_tuple(a1, a2, a0);
-			newFaces.push_back(nexFace);
-		}
+		// TODO: verificar ordenação em sentido anti-horário
+		Face nexFace = make_tuple(a1, a2, a0);
+		newFaces.push_back(nexFace);
 	}
 
 	this->faces = newFaces;
@@ -185,6 +203,7 @@ void Malha::refletir(Ponto A, Ponto B, Ponto C)
 
 bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
+	// this->updateStruct(this->pontos);
 	int num_faces = (int)this->faces.size();
 	float a, f, u, v;
 	Eigen::Vector3d h, s, q, p03d, d3d;
@@ -203,6 +222,7 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 		Ponto v0 = std::get<0>(a0);
 		Ponto v1 = std::get<1>(a0);
 		Ponto v2;
+
 		if (std::get<0>(a1) != v0)
 		{
 			v2 = std::get<0>(a1);
@@ -254,4 +274,13 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 			t_min = intersecoes[i];
 
 	return true;
+}
+
+void Malha::cameraTransform(Eigen::Matrix4d mwc)
+{
+	this->pontos = this->getStruct();
+	cout << this->pontos.at(0) << endl;
+	Objeto::cameraTransform(mwc);
+	this->updateStruct(this->pontos);
+	cout << this->pontos.at(0) << endl;
 }

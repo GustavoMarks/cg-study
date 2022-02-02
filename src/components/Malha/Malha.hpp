@@ -27,4 +27,5 @@ public:
 
 	// Sobrescrevendo função que calcula interseção de um raio com faces da malha
   bool hitRay(VectorXd p0, VectorXd d, float &t_min);
+	void cameraTransform(Eigen::Matrix4d mwc);
 };
