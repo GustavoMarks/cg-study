@@ -7,6 +7,9 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    // Materiais para os objetos
+    RGBIntesity *goldMaterial = new RGBIntesity(0.25, 0.20, 0.07);
+
     IDController *idController = new IDController();
 
     // Criando um cubo com 3 de aresta
@@ -31,9 +34,11 @@ int main(int argc, char **argv)
     Ponto po{{0.0, 0.0, 0.0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
+    esf->setMaterial(*goldMaterial, *goldMaterial, *goldMaterial, 1);
 
     Eigen::VectorXd u{{0, 1, 0}};
     Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 4, 4);
+    cil->setMaterial(*goldMaterial, *goldMaterial, *goldMaterial, 1);
 
     Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
 
@@ -47,10 +52,18 @@ int main(int argc, char **argv)
     vector<Objeto *> objList;
     // objList.push_back(cubo2);
     // objList.push_back(jarro);
-    // objList.push_back(esf);
-    objList.push_back(cil);
+    objList.push_back(esf);
+    // objList.push_back(cil);
     // objList.push_back(con);
-    Cenario *cena = new Cenario(*cam, objList);
+
+    // Descrevendo luzes
+    vector<LuzAmbiente *> luzList;
+
+    RGBIntesity *luzBranca = new RGBIntesity(1, 1, 1);
+    LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
+
+    luzList.push_back(luzAmbienteBranca);
+    Cenario *cena = new Cenario(*cam, objList, luzList);
 
     RGB **canvas = rayCasting(*cena, 80, 800, 800, 600, 800);
     // Abrindo uma janela com Open GL

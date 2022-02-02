@@ -16,5 +16,16 @@ RGBIntesity::RGBIntesity(double r, double b, double g)
 
 RGBIntesity RGBIntesity::cross(RGBIntesity b)
 {
-	return RGBIntesity(this->r * b.r, this->g * b.g, this->b * b.b);
+	double rResult = this->r * b.r < 1 ? this->r * b.r : 1;
+	double gResult = this->g * b.g < 1 ? this->g * b.g : 1;
+	double bResult = this->b * b.b < 1 ? this->b * b.b : 1;
+	return RGBIntesity(rResult, gResult, bResult);
+}
+
+RGBIntesity RGBIntesity::sum(RGBIntesity b)
+{
+	double rResult = this->r + b.r < 1 ? this->r + b.r : 1;
+	double gResult = this->g + b.g < 1 ? this->g + b.g : 1;
+	double bResult = this->b + b.b < 1 ? this->b + b.b : 1;
+	return RGBIntesity(rResult, gResult, bResult);
 }

@@ -3,10 +3,10 @@
 
 using namespace std;
 
-RGB** rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
+RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
 {
-  RGB** canvas;
-  canvas = new RGB*[nlinhas];
+  RGB **canvas;
+  canvas = new RGB *[nlinhas];
 
   float deltaX = W / ncolunas;
   float deltaY = H / nlinhas;
@@ -23,19 +23,21 @@ RGB** rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
     {
       plc(0) = p00x + c * deltaX;
       Ray raio(cenario.cam.eye, plc);
-      bool intersecao = raio.computarIntersecao(cenario);
+      RGBIntesity *I = new RGBIntesity();
+      bool intersecao = raio.computarIntersecao(cenario, *I);
 
       // TODO: Calcular cor e luminosidade
       if (intersecao)
       {
-        canvas[l][c].r = 200;
-        canvas[l][c].b = 200;
-        canvas[l][c].g = 200;
+        canvas[l][c].r = 255 * I->r;
+        canvas[l][c].b = 255 * I->g;
+        canvas[l][c].g = 255 * I->b;
       }
-      else {
-        canvas[l][c].r = 0;
-        canvas[l][c].b = 0;
-        canvas[l][c].g = 0;
+      else
+      {
+        canvas[l][c].r = 10;
+        canvas[l][c].b = 10;
+        canvas[l][c].g = 10;
       }
     }
   }

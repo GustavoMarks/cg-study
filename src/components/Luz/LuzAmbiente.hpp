@@ -1,6 +1,5 @@
-#include "../../helpers/RGBIntensity/RGBIntensity.hpp"
+#include "../../components/Malha/Malha.hpp"
 #include <eigen-3.4.0/Eigen/Dense>
-#include "../Ponto.hpp"
 
 class LuzAmbiente
 {

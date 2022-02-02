@@ -4,10 +4,12 @@
 
 using namespace std;
 
-Cenario::Cenario(Camera cam, vector<Objeto*> objs)
+Cenario::Cenario(Camera cam, vector<Objeto*> objs, vector<LuzAmbiente *> luzes)
 {
   this->cam = cam;
   this->objs = objs;
+  this->luzes = luzes;
+  
   this->updateCamera(cam);
 }
 
