@@ -14,8 +14,9 @@ Cilindro::Cilindro(int id, Ponto b, VectorXd u, float h, float r) : Objeto(id)
   this->r = r;
 }
 
-bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
+bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 {
+  int hitedSide = 0; // Irá indicar o lado atingida primeiro com 1 (topo), 2 (base), 3 (lateral)
   VectorXd v = (p0 - this->b) - ((p0 - this->b).dot(this->u) * u);
   VectorXd w = d - (d.dot(this->u) * u);
 
@@ -47,8 +48,9 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
     Plano plano_base(0, this->b, this->u);     // TODO: ver questao do id
     Plano plano_topo(1, centro_topo, this->u); // TODO: ver questao do id
     float t_base, t_topo;
-    bool base_intersecao = plano_base.hitRay(p0, d, t_base);
-    bool topo_intersecao = plano_topo.hitRay(p0, d, t_topo);
+    Eigen::Vector3d normalFake;
+    bool base_intersecao = plano_base.hitRay(p0, d, t_base, normalFake);
+    bool topo_intersecao = plano_topo.hitRay(p0, d, t_topo, normalFake);
 
     if (base_intersecao)
     {
@@ -56,6 +58,13 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
       VectorXd cbase = p_base - this->b;
       if (t_base >= 0 && cbase.norm() < this->r)
         intersecoes.push_back(t_base);
+
+      if (topo_intersecao && t_topo < t_base)
+        hitedSide = 1;
+      else if (intersecoes.size() >= 1 && intersecoes.at(0) < t_base)
+        hitedSide = 3;
+      else
+        hitedSide = 2;
     }
     if (topo_intersecao)
     {
@@ -63,7 +72,18 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
       VectorXd ctopo = p_base - this->b;
       if (t_topo >= 0 && ctopo.norm() < this->r)
         intersecoes.push_back(t_topo);
+
+      if (base_intersecao && t_topo > t_base)
+        hitedSide = 2;
+      else if (intersecoes.size() >= 1 && intersecoes.at(0) < t_base)
+        hitedSide = 3;
+      else
+        hitedSide = 1;
     }
+  }
+  else if ((int)intersecoes.size() == 2)
+  {
+    hitedSide = 3;
   }
 
   int num_intersecoes = (int)intersecoes.size();
@@ -71,6 +91,37 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
   for (int i = 1; i < num_intersecoes; i++)
     if (intersecoes[i] < t_min)
       t_min = intersecoes[i];
+
+  // Calculando vetor normal
+  if (hitedSide == 1)
+  {
+    n << this->u.x(), this->u.y(), this->u.z();
+  }
+  if (hitedSide == 2)
+  {
+    n << (-1) * this->u.x(), (-1) * this->u.y(), (-1) * this->u.z();
+  }
+  if (hitedSide == 3)
+  {
+    // Salvando ponto de colisão com o raio
+    Eigen::Vector3d p03d;
+    p03d << p0.x(), p0.y(), p0.z();
+    Eigen::Vector3d d3d;
+    d3d << d.x(), d.y(), d.z();
+    Eigen::Vector3d cb3d;
+    cb3d << this->b.x(), this->b.y(), this->b.z();
+    Eigen::Vector3d dc3d;
+    dc3d << this->u.x(), this->u.y(), this->u.z();
+
+    Eigen::Vector3d colisedPoint = p03d + (t_min * d3d);
+
+    Eigen::Vector3d N;
+    N = colisedPoint - cb3d;
+    N = N.dot(d3d) * d3d;
+    N = (colisedPoint - cb3d) - N;
+
+    n = N / this->r;
+  }
 
   return num_intersecoes > 0;
 }

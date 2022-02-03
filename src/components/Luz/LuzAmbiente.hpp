@@ -5,6 +5,8 @@ class LuzAmbiente
 {
 public:
 	RGBIntesity i;
+	bool isAmbiente = true;
 	LuzAmbiente(RGBIntesity i);
-	Eigen::Vector3d getLightToPoint(Ponto p); // Sobreescrever em classes derivadas
+	virtual Eigen::Vector3d getLightToPoint(Ponto p); // Sobreescrever em classes derivadas
+	virtual Eigen::Vector3d getOriginPoint();
 };

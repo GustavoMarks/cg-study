@@ -1,4 +1,4 @@
-#include "../Luz/LuzAmbiente.hpp"
+#include "../Luz/Luz.hpp"
 #include "../Camera/Camera.hpp"
 #include <vector>
 

@@ -7,5 +7,6 @@ private:
 public:
 	Ponto pf;
 	LuzPontual(RGBIntesity i, Ponto pf);
-	Eigen::Vector3d getLightToPoint(Ponto p);
+	virtual Eigen::Vector3d getLightToPoint(Ponto p);
+	Eigen::Vector3d getOriginPoint();
 };

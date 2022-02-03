@@ -7,5 +7,5 @@ public:
   VectorXd n; // é o vetor unitário perpendicular ao plano;
   Plano(int id);
   Plano(int id, Ponto p0, VectorXd n);
-  bool hitRay(VectorXd p0, VectorXd d, float &t_int);
+  bool hitRay(VectorXd p0, VectorXd d, float &t_int, Eigen::Vector3d &n);
 };

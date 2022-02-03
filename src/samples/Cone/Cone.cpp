@@ -15,8 +15,9 @@ Cone::Cone(int id, VectorXd n, float h, float r, Ponto cb) : Objeto(id)
   this->V = cb + h * n;
 }
 
-bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min)
+bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 {
+  bool hitedBase = false; // Irá indicar se base foi atingida
   VectorXd v = this->V - p0;
 
   float cos2theta = std::pow(this->h / std::sqrt(std::pow(this->h, 2) + std::pow(this->r, 2)), 2);
@@ -47,21 +48,53 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min)
   {
     Plano plano_base(0, this->cb, this->n); // TODO: ver questao do id
     float t_base;
-    bool base_intersecao = plano_base.hitRay(p0, d, t_base);
+    Eigen::Vector3d normalFake;
+    bool base_intersecao = plano_base.hitRay(p0, d, t_base, normalFake);
     if (base_intersecao)
     {
       Ponto p_base{{p0.x() + t_base * d.x(), p0.y() + t_base * d.y(), p0.z() + t_base * d.z()}};
       VectorXd cbase = p_base - this->cb;
       if (t_base >= 0 && cbase.norm() < this->r)
         intersecoes.push_back(t_base);
+
+      if (t_base > intersecoes.at(0))
+        hitedBase = true;
     }
   }
-  
+
   int num_intersecoes = (int)intersecoes.size();
   t_min = num_intersecoes > 0 ? intersecoes[0] : t_min;
   for (int i = 1; i < num_intersecoes; i++)
     if (intersecoes[i] < t_min)
       t_min = intersecoes[i];
+
+  // Calculando normal
+  if (hitedBase)
+  {
+    n << (-1) * this->n.x(), (-1) * this->n.y(), (-1) * this->n.z();
+  }
+  else
+  {
+    // Salvando ponto de colisão com o raio
+    Eigen::Vector3d p03d;
+    p03d << p0.x(), p0.y(), p0.z();
+    Eigen::Vector3d d3d;
+    d3d << d.x(), d.y(), d.z();
+    Eigen::Vector3d cb3d;
+    cb3d << this->cb.x(), this->cb.y(), this->cb.z();
+    Eigen::Vector3d dc3d;
+    dc3d << this->n.x(), this->n.y(), this->n.z();
+
+    Eigen::Vector3d colisedPoint = p03d + (t_min * d3d);
+
+    Eigen::Vector3d W;
+
+    W = colisedPoint - cb3d;
+    W = dc3d.cross(W);
+    n = this->V - colisedPoint;
+    n = W.cross(n);
+    n.normalize();
+  }
 
   return num_intersecoes > 0;
 }

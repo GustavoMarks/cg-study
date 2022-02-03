@@ -11,5 +11,5 @@ public:
 
   Cone(int id);
   Cone(int id, VectorXd n, float h,  float r, Ponto cb);
-  bool hitRay(VectorXd p0, VectorXd d, float &t_int);
+  bool hitRay(VectorXd p0, VectorXd d, float &t_int, Eigen::Vector3d &n);
 };

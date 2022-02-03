@@ -29,3 +29,11 @@ RGBIntesity RGBIntesity::sum(RGBIntesity b)
 	double bResult = this->b + b.b < 1 ? this->b + b.b : 1;
 	return RGBIntesity(rResult, gResult, bResult);
 }
+
+RGBIntesity RGBIntesity::atenuar(float fator)
+{
+	double rResult = this->r * fator < 1 ? this->r * fator : 1;
+	double gResult = this->g * fator < 1 ? this->g * fator : 1;
+	double bResult = this->b * fator < 1 ? this->b * fator : 1;
+	return RGBIntesity(rResult, gResult, bResult);
+}

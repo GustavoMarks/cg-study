@@ -8,7 +8,9 @@ using namespace std;
 int main(int argc, char **argv)
 {
     // Materiais para os objetos
-    RGBIntesity *goldMaterial = new RGBIntesity(0.25, 0.20, 0.07);
+    RGBIntesity *goldMaterialAmb = new RGBIntesity(0.25, 0.20, 0.07);
+    RGBIntesity *goldMaterialDif = new RGBIntesity(0.75, 0.61, 0.23);
+    RGBIntesity *goldMaterialSpec = new RGBIntesity(0.63, 0.56, 0.37);
 
     IDController *idController = new IDController();
 
@@ -34,17 +36,18 @@ int main(int argc, char **argv)
     Ponto po{{0.0, 0.0, 0.0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
-    esf->setMaterial(*goldMaterial, *goldMaterial, *goldMaterial, 1);
+    esf->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     Eigen::VectorXd u{{0, 1, 0}};
-    Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 4, 4);
-    cil->setMaterial(*goldMaterial, *goldMaterial, *goldMaterial, 1);
+    Cilindro *cil = new Cilindro(idController->generateNewUID(), po, u, 8, 4);
+    cil->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
+    con->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     Cubo *cubo2 = new Cubo(2.0, idController->generateNewUID());
 
-    Ponto eye{{0, -3, 8}};
+    Ponto eye{{0, -3, 12}};
     Ponto la{{3, 0, 0}};
     Ponto lu{{10, 10, 0}};
 
@@ -52,8 +55,8 @@ int main(int argc, char **argv)
     vector<Objeto *> objList;
     // objList.push_back(cubo2);
     // objList.push_back(jarro);
-    objList.push_back(esf);
-    // objList.push_back(cil);
+    // objList.push_back(esf);
+    objList.push_back(cil);
     // objList.push_back(con);
 
     // Descrevendo luzes
@@ -62,7 +65,16 @@ int main(int argc, char **argv)
     RGBIntesity *luzBranca = new RGBIntesity(1, 1, 1);
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
+    Eigen::Vector3d ldr;
+    ldr << 1, 1, 0;
+    LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
+
+    Ponto pontoDeLuz{{100, 100, 100}};
+    LuzPontual *luzPontualBranca = new LuzPontual(*luzBranca, pontoDeLuz);
+
     luzList.push_back(luzAmbienteBranca);
+    // luzList.push_back(luzDirBranca);
+    luzList.push_back(luzPontualBranca);
     Cenario *cena = new Cenario(*cam, objList, luzList);
 
     RGB **canvas = rayCasting(*cena, 80, 800, 800, 600, 800);

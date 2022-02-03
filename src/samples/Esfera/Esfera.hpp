@@ -7,5 +7,5 @@ private:
 public:
   Esfera(int id);
   Esfera(int id, Ponto p0, Ponto centro, float r);
-  bool hitRay(VectorXd p0, VectorXd d, float& t_min);
+  bool hitRay(VectorXd p0, VectorXd d, float& t_min, Eigen::Vector3d &n);
 };
