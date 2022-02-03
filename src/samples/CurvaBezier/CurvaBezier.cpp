@@ -34,7 +34,7 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 	for (int j = 0; j <= num_paralelos; j++)
 	{
 		// t is the parameter in the range from 0 to 1 to mark the points
-		int t = (1.0 / num_paralelos) * j;
+		double t = (1.0 / num_paralelos) * j;
 		double z = p0[1] * b_1(t) + p1[1] * b_2(t) + p2[1] * b_3(t) + p3[1] * b_4(t);
 
 		for (int i = 0; i <= num_meridianos; i++)
