@@ -223,7 +223,7 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 		Ponto v1 = std::get<1>(a0);
 		Ponto v2;
 
-		if (std::get<0>(a1) != v0)
+		if (std::get<0>(a1) != v0 && std::get<0>(a1) != v1)
 		{
 			v2 = std::get<0>(a1);
 		}
