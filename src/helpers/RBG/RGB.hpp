@@ -1,7 +1,4 @@
-class RGB
+struct RGB
 {
-  public:
-    int r, g, b;
-    RGB();
-    RGB(int r, int g, int b);
+  int r, g, b;
 };
