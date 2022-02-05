@@ -3,6 +3,7 @@
 #include <math.h>
 
 using namespace std;
+int infinito = 10000000;
 
 Ray::Ray(Ponto p0, Ponto d)
 {
@@ -38,7 +39,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
     }
   }
 
-  // Salvando ponto de colisão com o raio
+  // Salvando ponto de colisão com o raio de visão
   Ponto colisedPoint = this->p0 + (t_min * this->d);
 
   // Calculando luminosidade
@@ -50,7 +51,8 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
       LuzAmbiente *luzAtual = luzes.at(i);
       Objeto *finded = objs.at(objPosition);
 
-      if (luzAtual->isAmbiente)
+      // Luz ambiente
+      if (luzAtual->luzType == 1)
       {
         // Luminosidade ambiete
         RGBIntesity Ia = luzAtual->i;
@@ -71,12 +73,20 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
         Eigen::VectorXd lightDir{{l.x(), l.y(), l.z()}};
         lightDir = lightDir * (-1);
 
+        // Luz direncional
+        if (luzAtual->luzType == 2)
+        {
+          Eigen::VectorXd pontoInfinito{{infinito * lightDir.x(), infinito * lightDir.y(), infinito * lightDir.z()}};
+          Eigen::VectorXd pontoColidido{{colisedPoint.x(), colisedPoint.y(), colisedPoint.z()}};
+          originLight = pontoInfinito - pontoColidido;
+        }
+
         // Buscando normal e verficação se luz atinge objeto
         if (finded->hitRay(originLight, lightDir, t_min_light_to_obj, normal))
         {
           // Percorrendo outros objetos do cenário para verficar oclusão (sombra)
-          float t_min_light = 10000;
-          float aux2 = 10000;
+          float t_min_light = infinito;
+          float aux2 = infinito;
           for (int j = 0; j < objs.size(); j++)
           {
             if (j != objPosition)
@@ -92,7 +102,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
           {
             fad = l.dot(normal);
             fad = fad < 0 ? 0 : fad;
-            
+
             Eigen::Vector3d specularR;
             specularR = (2 * (fad)*normal) - l;
             Eigen::Vector3d specularV;

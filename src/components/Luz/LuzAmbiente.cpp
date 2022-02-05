@@ -14,3 +14,7 @@ Eigen::Vector3d LuzAmbiente::getOriginPoint()
 {
 	return Eigen::Vector3d{{0, 0, 0}};
 }
+
+void LuzAmbiente::cameraTransform(Eigen::Matrix4d mwc)
+{
+}

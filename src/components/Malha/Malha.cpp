@@ -201,7 +201,7 @@ void Malha::refletir(Ponto A, Ponto B, Ponto C)
 	this->updateStruct(this->pontos);
 }
 
-bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
+bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 {
 	// this->updateStruct(this->pontos);
 	int num_faces = (int)this->faces.size();
@@ -279,8 +279,6 @@ bool Malha::hitRay(VectorXd p0, VectorXd d, float &t_min)
 void Malha::cameraTransform(Eigen::Matrix4d mwc)
 {
 	this->pontos = this->getStruct();
-	cout << this->pontos.at(0) << endl;
 	Objeto::cameraTransform(mwc);
 	this->updateStruct(this->pontos);
-	cout << this->pontos.at(0) << endl;
 }

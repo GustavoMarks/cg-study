@@ -3,7 +3,7 @@
 LuzPontual::LuzPontual(RGBIntesity i, Ponto pf) : LuzAmbiente(i)
 {
 	this->pf = pf;
-	this->isAmbiente = false;
+	this->luzType = 3;
 }
 
 Eigen::Vector3d LuzPontual::getLightToPoint(Ponto p)
@@ -15,8 +15,18 @@ Eigen::Vector3d LuzPontual::getLightToPoint(Ponto p)
 	return L;
 }
 
-Eigen::Vector3d LuzPontual::getOriginPoint(){
+Eigen::Vector3d LuzPontual::getOriginPoint()
+{
 	Eigen::Vector3d LO;
 	LO << this->pf.x(), this->pf.y(), this->pf.z();
 	return LO;
+}
+
+void LuzPontual::cameraTransform(Eigen::Matrix4d mwc)
+{
+	Eigen::Vector4d v;
+	v << this->pf.x(), this->pf.y(), this->pf.z(), 1;
+	v = mwc * v;
+	Ponto updateDf{{v.x(), v.y(), v.z()}};
+	this->pf = updateDf;
 }

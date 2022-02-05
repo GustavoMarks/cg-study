@@ -7,6 +7,7 @@ LuzSpot::LuzSpot(RGBIntesity i, Ponto pf, Eigen::Vector3d df, double ang) : LuzP
 {
 	this->ang = ang;
 	this->df = df;
+	this->luzType = 4;
 }
 
 Eigen::Vector3d LuzSpot::getLightToPoint(Ponto p)
@@ -28,4 +29,18 @@ Eigen::Vector3d LuzSpot::getLightToPoint(Ponto p)
 		return L * 0;
 	}
 	return L * cosAlf;
+}
+
+void LuzSpot::cameraTransform(Eigen::Matrix4d mwc)
+{
+	Eigen::Vector4d v, w;
+	v << this->pf.x(), this->pf.y(), this->pf.z(), 1;
+	v = mwc * v;
+	w << this->df.x(), this->df.y(), this->df.z(), 1;
+	w = mwc * w;
+	Ponto updatePf{{v.x(), v.y(), v.z()}};
+	Eigen::Vector3d updateDf;
+	updateDf << v.x(), v.y(), v.z();
+	this->pf = updatePf;
+	this->df = updateDf;
 }

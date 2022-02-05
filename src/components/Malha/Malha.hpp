@@ -26,6 +26,6 @@ public:
 	void refletir(Ponto A, Ponto B, Ponto C);
 
 	// Sobrescrevendo função que calcula interseção de um raio com faces da malha
-  bool hitRay(VectorXd p0, VectorXd d, float &t_min);
+  virtual bool hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n);
 	void cameraTransform(Eigen::Matrix4d mwc);
 };
