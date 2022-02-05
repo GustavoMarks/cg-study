@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
     // Materiais para os objetos
-    RGBIntesity *goldMaterialAmb = new RGBIntesity(0.25, 0.20, 0.07);
+    RGBIntesity *goldMaterialAmb = new RGBIntesity(0.33, 0.22, 0.03);
     RGBIntesity *goldMaterialDif = new RGBIntesity(0.75, 0.61, 0.23);
     RGBIntesity *goldMaterialSpec = new RGBIntesity(0.63, 0.56, 0.37);
 
@@ -55,9 +55,9 @@ int main(int argc, char **argv)
 
     Camera *cam = new Camera(eye, la, lu);
     vector<Objeto *> objList;
-    objList.push_back(cubo2);
+    // objList.push_back(cubo2);
     // objList.push_back(jarro);
-    // objList.push_back(esf);
+    objList.push_back(esf);
     // objList.push_back(cil);
     // objList.push_back(con);
 

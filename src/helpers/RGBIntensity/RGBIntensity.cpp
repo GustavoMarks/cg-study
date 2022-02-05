@@ -7,11 +7,11 @@ RGBIntesity::RGBIntesity()
 	this->g = 0;
 }
 
-RGBIntesity::RGBIntesity(double r, double b, double g)
+RGBIntesity::RGBIntesity(double r, double g, double b)
 {
 	this->r = r > 1 ? 1 : r;
-	this->b = b > 1 ? 1 : b;
 	this->g = g > 1 ? 1 : g;
+	this->b = b > 1 ? 1 : b;
 }
 
 RGBIntesity RGBIntesity::cross(RGBIntesity b)

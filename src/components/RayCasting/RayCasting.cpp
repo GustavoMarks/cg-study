@@ -30,8 +30,8 @@ RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
       if (intersecao)
       {
         canvas[l][c].r = 255 * I->r;
-        canvas[l][c].b = 255 * I->g;
-        canvas[l][c].g = 255 * I->b;
+        canvas[l][c].g = 255 * I->g;
+        canvas[l][c].b = 255 * I->b;
       }
       else
       {
