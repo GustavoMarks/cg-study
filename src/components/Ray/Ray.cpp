@@ -3,7 +3,7 @@
 #include <math.h>
 
 using namespace std;
-int infinito = 10000000;
+int infinito = 100;
 
 Ray::Ray(Ponto p0, Ponto d)
 {
@@ -16,8 +16,8 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
 {
   Eigen::Vector3d normalFake;
   vector<Objeto *> objs = cenario.objs;
-  float t_min = 0;
-  float aux = 0;
+  float t_min = infinito;
+  float aux = infinito;
   bool finalResult = false;
   bool iResult = false;
   int objPosition = 0;
@@ -39,12 +39,12 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
     }
   }
 
-  // Salvando ponto de colisão com o raio de visão
-  Ponto colisedPoint = this->p0 + (t_min * this->d);
-
   // Calculando luminosidade
   if (finalResult)
   {
+    // Salvando ponto de colisão com o raio de visão
+    Ponto colisedPoint = this->p0 + (t_min * this->d);
+
     vector<LuzAmbiente *> luzes = cenario.luzes;
     for (int i = 0; i < luzes.size(); i++)
     {
@@ -63,7 +63,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
         // Calculando fator de atenuação difuso e especular
         float fad = 0;
         float fas = 0;
-        float t_min_light_to_obj = 0;
+        float t_min_light_to_obj = infinito;
         Eigen::Vector3d normal;
 
         Eigen::Vector3d originLight3d = luzAtual->getOriginPoint();
@@ -77,8 +77,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
         if (luzAtual->luzType == 2)
         {
           Eigen::VectorXd pontoInfinito{{infinito * lightDir.x(), infinito * lightDir.y(), infinito * lightDir.z()}};
-          Eigen::VectorXd pontoColidido{{colisedPoint.x(), colisedPoint.y(), colisedPoint.z()}};
-          originLight = pontoInfinito - pontoColidido;
+          originLight = pontoInfinito;
         }
 
         // Buscando normal e verficação se luz atinge objeto
@@ -87,15 +86,15 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
           // Percorrendo outros objetos do cenário para verficar oclusão (sombra)
           float t_min_light = infinito;
           float aux2 = infinito;
-          for (int j = 0; j < objs.size(); j++)
-          {
-            if (j != objPosition)
-            {
-              aux2 = t_min_light;
-              objs.at(j)->hitRay(originLight, lightDir, t_min_light, normalFake);
-              t_min_light = aux2 < t_min_light ? aux2 : t_min_light;
-            }
-          }
+          // for (int j = 0; j < objs.size(); j++)
+          // {
+          //   if (j != objPosition)
+          //   {
+          //     aux2 = t_min_light;
+          //     objs.at(j)->hitRay(originLight, lightDir, t_min_light, normalFake);
+          //     t_min_light = aux2 < t_min_light ? aux2 : t_min_light;
+          //   }
+          // }
 
           // Caso de não oclusão, calculando atenuações
           if (t_min_light_to_obj <= t_min_light)

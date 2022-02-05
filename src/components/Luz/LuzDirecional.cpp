@@ -2,6 +2,7 @@
 
 LuzDirecional::LuzDirecional(RGBIntesity i, Eigen::Vector3d df) : LuzAmbiente(i)
 {
+	df.normalize();
 	this->df = df;
 	this->luzType = 2;
 }

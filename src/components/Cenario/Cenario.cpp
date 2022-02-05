@@ -30,8 +30,8 @@ void Cenario::updateCamera(Camera cam)
 
   cout << "Convertendo coordenadas das luzes de mundo para câmera" << endl;
 
-  for (i = 0; i < this->luzes.size(); i++)
-  {
-    this->luzes.at(i)->cameraTransform(mwc);
-  }
+  // for (i = 0; i < this->luzes.size(); i++)
+  // {
+  //   this->luzes.at(i)->cameraTransform(mwc);
+  // }
 }

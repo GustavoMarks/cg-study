@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     Ponto po{{0.0, 0.0, 0.0}};
     Ponto pe{{0.0, 0.0, 3.0}};
-    Esfera *esf = new Esfera(idController->generateNewUID(), pe, po, 3);
+    Esfera *esf = new Esfera(idController->generateNewUID(), po, 3);
     esf->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     Eigen::VectorXd u{{0, 1, 0}};
@@ -68,14 +68,14 @@ int main(int argc, char **argv)
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
     Eigen::Vector3d ldr;
-    ldr << 1, 1, 0;
+    ldr << 1, 0, 0;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
     Ponto pontoDeLuz{{100, 100, 100}};
     LuzPontual *luzPontualBranca = new LuzPontual(*luzBranca, pontoDeLuz);
 
-    luzList.push_back(luzAmbienteBranca);
-    // luzList.push_back(luzDirBranca);
+    // luzList.push_back(luzAmbienteBranca);
+    luzList.push_back(luzDirBranca);
     // luzList.push_back(luzPontualBranca);
     Cenario *cena = new Cenario(*cam, objList, luzList);
 

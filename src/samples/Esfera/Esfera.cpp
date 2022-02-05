@@ -1,26 +1,26 @@
 #include "../samples.hpp"
+#include <iostream>
 
 Esfera::Esfera(int id) : Objeto(id)
 {
 }
 
-Esfera::Esfera(int id, Ponto p0, Ponto centro, float r) : Objeto(id)
+Esfera::Esfera(int id, Ponto centro, float r) : Objeto(id)
 {
-  this->p0 = p0;
   this->centro = centro;
   this->r = r;
 }
 bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 {
-  VectorXd v = p0 - d;
+  VectorXd v = p0 - this->centro;
   float a = d.dot(d);
   float b = v.dot(d);
   float c = v.dot(v) - std::pow(this->r, 2);
-  float delta = 4 * std::pow(b, 2) - 4 * a * c;
+  float delta = std::pow(b, 2) - (a * c);
   if (delta < 0)
     return false;
-  float t1 = (-2 * b + std::sqrt(delta)) / (2 * a);
-  float t2 = (-2 * b - std::sqrt(delta)) / (2 * a);
+  float t1 = (std::sqrt(delta) - b) / a;
+  float t2 = ((-std::sqrt(delta)) - b) / a;
   t_min = t1 < t2 ? t1 : t2;
 
   // Salvando ponto de colisão com o raio
@@ -33,6 +33,7 @@ bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 
   Eigen::Vector3d colisedPoint = p03d + (t_min * d3d);
   n = (colisedPoint - centro3d) / this->r;
+  n.normalize();
 
   return true;
 }
