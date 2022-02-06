@@ -1,5 +1,8 @@
 #include "../samples.hpp"
 
+using std::sqrt;
+using std::pow;
+
 Cilindro::Cilindro(int id) : Objeto(id)
 {
 }
@@ -55,8 +58,10 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
     if (base_intersecao)
     {
       Ponto p_base{{p0.x() + t_base * d.x(), p0.y() + t_base * d.y(), p0.z() + t_base * d.z()}};
-      VectorXd cbase = p_base - this->b;
-      if (t_base >= 0 && cbase.norm() < this->r)
+      // VectorXd cbase = p_base - this->b;
+      float distancia = sqrt(pow(this->b.x() - p_base.x(), 2) + pow(this->b.y() - p_base.y(), 2) + pow(this->b.z() - p_base.z(), 2));
+      // if (t_base >= 0 && cbase.norm() < this->r)
+      if (t_base >= 0 && distancia < this->r)
         intersecoes.push_back(t_base);
 
       if (topo_intersecao && t_topo < t_base)
@@ -68,9 +73,12 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
     }
     if (topo_intersecao)
     {
-      Ponto p_base{{p0.x() + t_topo * d.x(), p0.y() + t_topo * d.y(), p0.z() + t_topo * d.z()}};
-      VectorXd ctopo = p_base - this->b;
-      if (t_topo >= 0 && ctopo.norm() < this->r)
+      Ponto p_topo{{p0.x() + t_topo * d.x(), p0.y() + t_topo * d.y(), p0.z() + t_topo * d.z()}};
+      // VectorXd ctopo = p_topo - this->b;
+      VectorXd ctopo = this->b * this->h;
+      float distancia = sqrt(pow(ctopo.x() - p_topo.x(), 2) + pow(ctopo.y() - p_topo.y(), 2) + pow(ctopo.z() - p_topo.z(), 2));
+      // if (t_topo >= 0 && ctopo.norm() < this->r)
+      if (t_topo >= 0 && distancia < this->r)
         intersecoes.push_back(t_topo);
 
       if (base_intersecao && t_topo > t_base)
