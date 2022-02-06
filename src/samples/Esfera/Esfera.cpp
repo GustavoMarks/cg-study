@@ -37,9 +37,7 @@ bool Esfera::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight,
     colisedPoint = p0Light + (t_min_light * dLight);
     Eigen::VectorXd cpvXd{{colisedPointView.x(), colisedPointView.y(), colisedPointView.z()}};
 
-    colisedPoint = colisedPoint * (-1);
-
-    if (colisedPoint.isApprox(cpvXd, 0.1))
+    if (!colisedPoint.isApprox(cpvXd, 0.1))
     {
       return false;
     }
