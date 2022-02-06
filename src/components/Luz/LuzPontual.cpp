@@ -15,10 +15,9 @@ Eigen::Vector3d LuzPontual::getLightToPoint(Ponto p)
 	return L;
 }
 
-Eigen::Vector3d LuzPontual::getOriginPoint()
+Eigen::VectorXd LuzPontual::getOriginPoint()
 {
-	Eigen::Vector3d LO;
-	LO << this->pf.x(), this->pf.y(), this->pf.z();
+	Eigen::VectorXd LO{{this->pf.x(), this->pf.y(), this->pf.z()}};
 	return LO;
 }
 

@@ -8,6 +8,7 @@ public:
 	int luzType = 1;
 	LuzAmbiente(RGBIntesity i);
 	virtual Eigen::Vector3d getLightToPoint(Ponto p); // Sobreescrever em classes derivadas
-	virtual Eigen::Vector3d getOriginPoint();
+	virtual Eigen::VectorXd getOriginPoint();
+	virtual Eigen::VectorXd getDir();
 	virtual void cameraTransform(Eigen::Matrix4d mwc);
 };

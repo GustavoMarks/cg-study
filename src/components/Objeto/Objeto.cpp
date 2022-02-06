@@ -339,7 +339,12 @@ void Objeto::refletir(Ponto A, Ponto B, Ponto C)
   this->pontos = updatedPointsList;
 }
 
-bool Objeto::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
+bool Objeto::hitRay(VectorXd p0, VectorXd d, float &t_min)
+{
+  return false;
+}
+
+bool Objeto::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
 {
   return false;
 }

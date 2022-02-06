@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
     Eigen::Vector3d ldr;
-    ldr << 1, 0, 0;
+    ldr << 0, -1, -1;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
     Ponto pontoDeLuz{{100, 100, 100}};

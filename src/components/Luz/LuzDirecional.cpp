@@ -12,9 +12,10 @@ Eigen::Vector3d LuzDirecional::getLightToPoint(Ponto p)
 	return this->df * (-1);
 }
 
-Eigen::Vector3d LuzDirecional::getOriginPoint()
+Eigen::VectorXd LuzDirecional::getOriginPoint()
 {
-	return this->df; // "Origin no infino"
+	Eigen::VectorXd returnedDir{{this->df.x(), this->df.y(), this->df.z()}};
+	return returnedDir * 1000; // Origin no "infino"
 }
 
 void LuzDirecional::cameraTransform(Eigen::Matrix4d mwc)
@@ -25,4 +26,10 @@ void LuzDirecional::cameraTransform(Eigen::Matrix4d mwc)
 	Eigen::Vector3d updateDf;
 	updateDf << v.x(), v.y(), v.z();
 	this->df = updateDf;
+}
+
+Eigen::VectorXd LuzDirecional::getDir()
+{
+	Eigen::VectorXd convertedDr{{this->df.x(), this->df.y(), this->df.z()}};
+	return convertedDr;
 }

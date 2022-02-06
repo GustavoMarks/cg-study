@@ -6,6 +6,7 @@ public:
 	Eigen::Vector3d df;
 	LuzDirecional(RGBIntesity i, Eigen::Vector3d df);
 	Eigen::Vector3d getLightToPoint(Ponto p);
-	Eigen::Vector3d getOriginPoint();
+	Eigen::VectorXd getOriginPoint();
+	Eigen::VectorXd getDir();
 	void cameraTransform(Eigen::Matrix4d mwc);
 };

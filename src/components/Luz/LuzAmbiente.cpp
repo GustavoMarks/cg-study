@@ -10,9 +10,18 @@ Eigen::Vector3d LuzAmbiente::getLightToPoint(Ponto p)
 	return Eigen::Vector3d{{0, 0, 0}};
 }
 
-Eigen::Vector3d LuzAmbiente::getOriginPoint()
+Eigen::VectorXd LuzAmbiente::getOriginPoint()
 {
-	return Eigen::Vector3d{{0, 0, 0}};
+	Eigen::VectorXd nullVector;
+	nullVector << 0, 0, 0;
+	return nullVector;
+}
+
+Eigen::VectorXd LuzAmbiente::getDir()
+{
+	Eigen::VectorXd nullVector;
+	nullVector << 0, 0, 0;
+	return nullVector;
 }
 
 void LuzAmbiente::cameraTransform(Eigen::Matrix4d mwc)

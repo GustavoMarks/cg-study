@@ -14,7 +14,6 @@ Ray::Ray(Ponto p0, Ponto d)
 
 bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
 {
-  Eigen::Vector3d normalFake;
   vector<Objeto *> objs = cenario.objs;
   float t_min = infinito;
   float aux = infinito;
@@ -24,7 +23,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
   for (int i = 0; i < objs.size(); i++)
   {
     aux = t_min;
-    iResult = objs.at(i)->hitRay(this->p0, this->d, t_min, normalFake);
+    iResult = objs.at(i)->hitRay(this->p0, this->d, t_min);
     if (iResult)
     {
       if (aux < t_min)
@@ -60,67 +59,47 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
       }
       else
       {
-        // Calculando fator de atenuação difuso e especular
-        float fad = 0;
-        float fas = 0;
-        float t_min_light_to_obj = infinito;
+        // Seperando informações do ponto de luz
+        Eigen::VectorXd lightDir = luzAtual->getDir();
+        Eigen::VectorXd OriginLight = luzAtual->getOriginPoint();
+        // Simulando feixos de luzes paralelos da luz direcional
+        if (luzAtual->luzType == 2)
+          OriginLight = OriginLight - colisedPoint;
         Eigen::Vector3d normal;
 
-        Eigen::Vector3d originLight3d = luzAtual->getOriginPoint();
-        Eigen::VectorXd originLight{{originLight3d.x(), originLight3d.y(), originLight3d.z()}};
+        // Verificando se o ponto do objeto é iluminado
+        bool lightResult = finded->hitLight(colisedPoint, OriginLight, lightDir, normal);
 
-        Eigen::Vector3d l = luzAtual->getLightToPoint(colisedPoint);
-        Eigen::VectorXd lightDir{{l.x(), l.y(), l.z()}};
-        lightDir = lightDir * (-1);
-
-        // Luz direncional
-        if (luzAtual->luzType == 2)
+        if (lightResult)
         {
-          Eigen::VectorXd pontoInfinito{{infinito * lightDir.x(), infinito * lightDir.y(), infinito * lightDir.z()}};
-          originLight = pontoInfinito;
-        }
+          // TODO: calcular oclusão por outros objetos (sombra)
+          // Calculando atenuações da luminidade
+          float fad = 0;
+          float fas = 0;
+          Eigen::Vector3d l = luzAtual->getLightToPoint(colisedPoint);
 
-        // Buscando normal e verficação se luz atinge objeto
-        if (finded->hitRay(originLight, lightDir, t_min_light_to_obj, normal))
-        {
-          // Percorrendo outros objetos do cenário para verficar oclusão (sombra)
-          float t_min_light = infinito;
-          float aux2 = infinito;
-          // for (int j = 0; j < objs.size(); j++)
-          // {
-          //   if (j != objPosition)
-          //   {
-          //     aux2 = t_min_light;
-          //     objs.at(j)->hitRay(originLight, lightDir, t_min_light, normalFake);
-          //     t_min_light = aux2 < t_min_light ? aux2 : t_min_light;
-          //   }
-          // }
+          fad = l.dot(normal);
+          fad = fad < 0 ? 0 : fad;
 
-          // Caso de não oclusão, calculando atenuações
-          if (t_min_light_to_obj <= t_min_light)
-          {
-            fad = l.dot(normal);
-            fad = fad < 0 ? 0 : fad;
+          Eigen::Vector3d specularR;
+          specularR = (2 * fad * normal) - l;
 
-            Eigen::Vector3d specularR;
-            specularR = (2 * (fad)*normal) - l;
-            Eigen::Vector3d specularV;
-            specularV << this->d.x(), this->d.y(), this->d.z();
-            specularV = specularV * (-1);
-            fas = specularV.dot(specularR);
-            fas = pow(fas, finded->m);
-            fas = fas < 0 ? 0 : fas;
+          Eigen::Vector3d specularV;
+          specularV << this->d.x(), this->d.y(), this->d.z();
+          specularV = specularV * (-1);
 
-            RGBIntesity Id = luzAtual->i.atenuar(fad);
-            I = I.sum(finded->kd.cross(Id));
+          fas = specularV.dot(specularR);
+          fas = pow(fas, finded->m);
+          fas = fas < 0 ? 0 : fas;
 
-            RGBIntesity Is = luzAtual->i.atenuar(fas);
-            I = I.sum(finded->ks.cross(Is));
-          }
+          RGBIntesity Id = luzAtual->i.atenuar(fad);
+          I = I.sum(finded->kd.cross(Id));
+
+          RGBIntesity Is = luzAtual->i.atenuar(fas);
+          I = I.sum(finded->ks.cross(Is));
         }
       }
     }
   }
-
   return finalResult;
 }

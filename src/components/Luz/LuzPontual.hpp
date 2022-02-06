@@ -8,6 +8,6 @@ public:
 	Ponto pf;
 	LuzPontual(RGBIntesity i, Ponto pf);
 	virtual Eigen::Vector3d getLightToPoint(Ponto p);
-	Eigen::Vector3d getOriginPoint();
+	Eigen::VectorXd getOriginPoint();
 	virtual void cameraTransform(Eigen::Matrix4d mwc);
 };

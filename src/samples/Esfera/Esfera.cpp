@@ -10,7 +10,7 @@ Esfera::Esfera(int id, Ponto centro, float r) : Objeto(id)
   this->centro = centro;
   this->r = r;
 }
-bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
+bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
   VectorXd v = p0 - this->centro;
   float a = d.dot(d);
@@ -23,17 +23,42 @@ bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
   float t2 = ((-std::sqrt(delta)) - b) / a;
   t_min = t1 < t2 ? t1 : t2;
 
-  // Salvando ponto de colisão com o raio
-  Eigen::Vector3d p03d;
-  p03d << p0.x(), p0.y(), p0.z();
-  Eigen::Vector3d d3d;
-  d3d << d.x(), d.y(), d.z();
-  Eigen::Vector3d centro3d;
-  centro3d << this->centro.x(), this->centro.y(), this->centro.z();
-
-  Eigen::Vector3d colisedPoint = p03d + (t_min * d3d);
-  n = (colisedPoint - centro3d) / this->r;
-  n.normalize();
-
   return true;
+}
+
+bool Esfera::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
+{
+  float t_min_light;
+  bool resultHit = this->hitRay(p0Light, dLight, t_min_light);
+  if (resultHit)
+  {
+    // Calculando ponto de interseção entre luz e objeto
+    Eigen::VectorXd colisedPoint;
+    colisedPoint = p0Light + (t_min_light * dLight);
+    Eigen::VectorXd cpvXd{{colisedPointView.x(), colisedPointView.y(), colisedPointView.z()}};
+
+    colisedPoint = colisedPoint * (-1);
+
+    if ((colisedPoint - cpvXd).isMuchSmallerThan(10, 0.1))
+    {
+      return false;
+    }
+
+    // Buscando normal entre o ponto iluminado e a fonte de luz (esfera)
+    Eigen::Vector3d p03d;
+    p03d << p0Light.x(), p0Light.y(), p0Light.z();
+    Eigen::Vector3d d3d;
+    d3d << dLight.x(), dLight.y(), dLight.z();
+    Eigen::Vector3d centro3d;
+    centro3d << this->centro.x(), this->centro.y(), this->centro.z();
+    Eigen::Vector3d colised3d;
+    colised3d << colisedPointView.x(), colisedPointView.y(), colisedPointView.z();
+
+    n = (colised3d - centro3d) / this->r;
+    n.normalize();
+
+    return true;
+  }
+
+  return false;
 }
