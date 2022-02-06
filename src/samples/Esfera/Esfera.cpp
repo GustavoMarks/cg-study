@@ -39,7 +39,7 @@ bool Esfera::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight,
 
     colisedPoint = colisedPoint * (-1);
 
-    if ((colisedPoint - cpvXd).isMuchSmallerThan(10, 0.1))
+    if (colisedPoint.isApprox(cpvXd, 0.1))
     {
       return false;
     }
