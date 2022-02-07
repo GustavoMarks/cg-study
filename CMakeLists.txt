@@ -6,7 +6,7 @@ find_package(OpenGL REQUIRED)
 set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/install)
 find_package(GLUT REQUIRED)
 
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.hpp")
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.hpp" "src/*.h")
 
 add_executable(programa ${SOURCES})
 

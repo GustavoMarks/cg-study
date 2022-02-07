@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include "../../components/RayCasting/RayCasting.hpp"
-
+#include "../../imgui/imgui.h"
+#include "../../imgui/imgui_impl_glut.h"
+#include "../../imgui/imgui_impl_opengl2.h"
 class Window
 {
 public:
