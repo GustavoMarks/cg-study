@@ -50,6 +50,11 @@ int main(int argc, char **argv)
     Cubo *cubo2 = new Cubo(2.0, idController->generateNewUID());
     cubo2->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
+    Ponto pPlano{{0, -4, 0}};
+    Eigen::VectorXd dPlano{{0, 1, 0}};
+    Plano *plano = new Plano(idController->generateNewUID(), pPlano, dPlano);
+    plano->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
     Ponto eye{{0, 0, 10}};
     Ponto la{{0, 0, 0}};
     Ponto lu{{10, 10, 0}};
@@ -59,8 +64,9 @@ int main(int argc, char **argv)
     // objList.push_back(cubo2);
     // objList.push_back(jarro);
     // objList.push_back(esf);
-    objList.push_back(cil);
+    // objList.push_back(cil);
     // objList.push_back(con);
+    objList.push_back(plano);
 
     // Descrevendo luzes
     vector<LuzAmbiente *> luzList;
@@ -69,7 +75,7 @@ int main(int argc, char **argv)
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
     Eigen::Vector3d ldr;
-    ldr << 1, 1, 0;
+    ldr << 0, 1, 1;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
     Ponto pontoDeLuz{{100, 100, 100}};

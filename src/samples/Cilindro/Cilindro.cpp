@@ -69,9 +69,8 @@ bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSi
     Plano plano_base(0, this->b, this->u);     // TODO: ver questao do id
     Plano plano_topo(1, centro_topo, this->u); // TODO: ver questao do id
     float t_base, t_topo;
-    Eigen::Vector3d normalFake;
-    bool base_intersecao = plano_base.hitRay(p0, d, t_base, normalFake);
-    bool topo_intersecao = plano_topo.hitRay(p0, d, t_topo, normalFake);
+    bool base_intersecao = plano_base.hitRay(p0, d, t_base);
+    bool topo_intersecao = plano_topo.hitRay(p0, d, t_topo);
 
     if (base_intersecao)
     {

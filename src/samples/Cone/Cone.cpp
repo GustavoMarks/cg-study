@@ -48,8 +48,7 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
   {
     Plano plano_base(0, this->cb, this->n); // TODO: ver questao do id
     float t_base;
-    Eigen::Vector3d normalFake;
-    bool base_intersecao = plano_base.hitRay(p0, d, t_base, normalFake);
+    bool base_intersecao = plano_base.hitRay(p0, d, t_base);
     if (base_intersecao)
     {
       Ponto p_base{{p0.x() + t_base * d.x(), p0.y() + t_base * d.y(), p0.z() + t_base * d.z()}};
