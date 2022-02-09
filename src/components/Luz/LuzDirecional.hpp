@@ -8,5 +8,4 @@ public:
 	Eigen::Vector3d getLightToPoint(Ponto p);
 	Eigen::VectorXd getOriginPoint();
 	Eigen::VectorXd getDir();
-	void cameraTransform(Eigen::Matrix4d mwc);
 };
