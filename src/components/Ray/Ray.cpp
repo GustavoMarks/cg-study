@@ -64,7 +64,7 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
         Eigen::VectorXd OriginLight = luzAtual->getOriginPoint();
         // Simulando feixos de luzes paralelos da luz direcional
         if (luzAtual->luzType == 2)
-          OriginLight =  colisedPoint - OriginLight;
+          OriginLight = colisedPoint - OriginLight;
         Eigen::Vector3d normal;
 
         // Verificando se o ponto do objeto é iluminado
