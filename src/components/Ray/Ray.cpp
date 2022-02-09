@@ -3,7 +3,7 @@
 #include <math.h>
 
 using namespace std;
-int infinito = 100;
+int infinito = 10000;
 
 Ray::Ray(Ponto p0, Ponto d)
 {

@@ -7,12 +7,14 @@ Esfera::Esfera(int id) : Objeto(id)
 
 Esfera::Esfera(int id, Ponto centro, float r) : Objeto(id)
 {
-  this->centro = centro;
+  std::vector<Ponto> pontos;
+  pontos.push_back(centro);
+  this->pontos = pontos;
   this->r = r;
 }
 bool Esfera::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
-  VectorXd v = p0 - this->centro;
+  VectorXd v = p0 - this->pontos.at(0);
   float a = d.dot(d);
   float b = v.dot(d);
   float c = v.dot(v) - std::pow(this->r, 2);
@@ -48,7 +50,7 @@ bool Esfera::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight,
     Eigen::Vector3d d3d;
     d3d << dLight.x(), dLight.y(), dLight.z();
     Eigen::Vector3d centro3d;
-    centro3d << this->centro.x(), this->centro.y(), this->centro.z();
+    centro3d << this->pontos.at(0).x(), this->pontos.at(0).y(), this->pontos.at(0).z();
     Eigen::Vector3d colised3d;
     colised3d << colisedPointView.x(), colisedPointView.y(), colisedPointView.z();
 
