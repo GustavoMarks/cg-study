@@ -37,31 +37,34 @@ bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSi
   float b = v.dot(w);
   float c = v.dot(v) - std::pow(this->r, 2);
 
-  float delta = std::pow(b, 2) - a * c;
-  if (delta < 0)
-    return false;
-
-  float t_int0 = (-1 * b + std::sqrt(delta)) / a;
-  float t_int1 = (-1 * b - std::sqrt(delta)) / a;
-
-  if (delta == 0)
-  {
-    t_min = t_int0 < t_int1 ? t_int0 : t_int1;
-    hitedSide = 3;
-    return true;
-  }
-
-  Ponto p1{{p0.x() + t_int0 * d.x(), p0.y() + t_int0 * d.y(), p0.z() + t_int0 * d.z()}};
-  Ponto p2{{p0.x() + t_int1 * d.x(), p0.y() + t_int1 * d.y(), p0.z() + t_int1 * d.z()}};
-  float p1_dotproduct = (p1 - this->b).dot(this->u);
-  float p2_dotproduct = (p2 - this->b).dot(this->u);
-
   std::vector<float> intersecoes;
 
-  if (t_int0 >= 0 && (0 <= p1_dotproduct && p1_dotproduct <= this->h))
-    intersecoes.push_back(t_int0);
-  if (t_int1 >= 0 && (0 <= p2_dotproduct && p2_dotproduct <= this->h))
-    intersecoes.push_back(t_int1);
+  if (a != 0)
+  {
+    float delta = std::pow(b, 2) - a * c;
+    if (delta < 0)
+      return false;
+
+    float t_int0 = (-1 * b + std::sqrt(delta)) / a;
+    float t_int1 = (-1 * b - std::sqrt(delta)) / a;
+
+    if (delta == 0)
+    {
+      t_min = t_int0 < t_int1 ? t_int0 : t_int1;
+      hitedSide = 3;
+      return true;
+    }
+
+    Ponto p1{{p0.x() + t_int0 * d.x(), p0.y() + t_int0 * d.y(), p0.z() + t_int0 * d.z()}};
+    Ponto p2{{p0.x() + t_int1 * d.x(), p0.y() + t_int1 * d.y(), p0.z() + t_int1 * d.z()}};
+    float p1_dotproduct = (p1 - this->b).dot(this->u);
+    float p2_dotproduct = (p2 - this->b).dot(this->u);
+
+    if (t_int0 >= 0 && (0 <= p1_dotproduct && p1_dotproduct <= this->h))
+      intersecoes.push_back(t_int0);
+    if (t_int1 >= 0 && (0 <= p2_dotproduct && p2_dotproduct <= this->h))
+      intersecoes.push_back(t_int1);
+  }
 
   if ((int)intersecoes.size() < 2)
   {
