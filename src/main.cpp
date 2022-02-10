@@ -86,9 +86,13 @@ int main(int argc, char **argv)
     // luzList.push_back(luzPontualBranca);
     Cenario *cena = new Cenario(*cam, objList, luzList);
 
-    RGB **canvas = rayCasting(*cena, 80, 800, 800, 600, 800);
+    float d = 80;
+    int H = 800;
+    int W = 800;
+
+    RGB **canvas = rayCasting(*cena, d, H, W, 600, 800);
     // Abrindo uma janela com Open GL
-    Window w(argc, argv, 800, 600, "CG Study", canvas, cena);
+    Window w(argc, argv, 800, 600, "CG Study", canvas, cena, d, H, W);
 
     return 0;
 }

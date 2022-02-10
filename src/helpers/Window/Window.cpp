@@ -4,6 +4,9 @@
 int height, width;
 RGB **canvas;
 Cenario *cena;
+float d;
+int H;
+int W;
 
 GLubyte *PixelBuffer;
 
@@ -19,7 +22,7 @@ static void display_gui()
 	ImGui::Begin("Cenario", NULL, window_flags);
 	if (ImGui::BeginTabBar("Main tab bar"))
 	{
-		/* Propriedades de camera */
+		/* Transformações de câmera: Mudar a posição do fotógrafo e os parâmetros da câmera; */
 		if (ImGui::BeginTabItem("Camera"))
 		{
 			// obtem os dados da camera inicial
@@ -35,37 +38,63 @@ static void display_gui()
 			ImGui::InputFloat3("Eye", eye3);
 			ImGui::InputFloat3("Lookat", lookat3);
 			ImGui::InputFloat3("Viewup", viewup3);
-			if (ImGui::Button("Atualizar camera"))
+			if (ImGui::Button("Atualizar Câmera"))
 			{
 				// criando camera com os dados atualizados e substituindo na cena
-				Ponto new_eye {{eye3[0], eye3[1], eye3[2]}};
-				Ponto new_lookat {{lookat3[0], lookat3[1], lookat3[2]}};
-				Ponto new_viewup {{viewup3[0], viewup3[1], viewup3[2]}};
+				Ponto new_eye{{eye3[0], eye3[1], eye3[2]}};
+				Ponto new_lookat{{lookat3[0], lookat3[1], lookat3[2]}};
+				Ponto new_viewup{{viewup3[0], viewup3[1], viewup3[2]}};
 				Camera new_cam(new_eye, new_lookat, new_viewup);
 				cena->updateCamera(new_cam);
-				
+
 				std::cout << "Camera atualizada com os novos pontos:" << std::endl;
-				std::cout << "Eye: " << std::endl << "x: " << new_eye << std::endl;
-				std::cout << "Lookat" << std::endl << "y: " << new_lookat << std::endl;
-				std::cout << "Viewup: " << std::endl << "z: " << new_viewup << std::endl;
+				std::cout << "Eye: " << std::endl
+									<< "x: " << new_eye << std::endl;
+				std::cout << "Lookat" << std::endl
+									<< "y: " << new_lookat << std::endl;
+				std::cout << "Viewup: " << std::endl
+									<< "z: " << new_viewup << std::endl;
 
 				// redraw();
 			}
 
 			ImGui::EndTabItem();
 		}
+		/* Mudança do campo de visão: Alterar tamanho da janela no plano bloqueador (Plano de projeção) mantendo a distância d fixa ou Fixar o tamanho da janela e aumentar ou diminuir o valor de d; */
+		if (ImGui::BeginTabItem("Campo de Visão"))
+		{
+			static int *H_atual = &H;
+			static int *W_atual = &W;
+			static float *D_atual = &d;
+
+			ImGui::InputInt("Tamanho H da janela", H_atual);
+			ImGui::InputInt("Tamanho W da janela", W_atual);
+			ImGui::InputFloat("Distância D", D_atual, 0.1f, 1.0f, 2);
+
+			if (ImGui::Button("Atualizar Campo de Visão"))
+			{
+
+				// redraw(H_atual, W_atual, D_atual);
+			}
+
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 	ImGui::End();
 }
 
-Window::Window(int argc, char **argv, int setWidth, int setHeight, const char *title, RGB **setCanvas, Cenario *setCena)
+Window::Window(int argc, char **argv, int setWidth, int setHeight, const char *title, RGB **setCanvas, Cenario *setCena, float setD, int setH, int setW)
 {
 	// Setando variáveis globais
 	height = setHeight;
 	width = setWidth;
 	canvas = setCanvas;
 	cena = setCena;
+	d = setD;
+	H = setH;
+	W = setW;
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
