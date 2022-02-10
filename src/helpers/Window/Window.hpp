@@ -6,6 +6,6 @@
 class Window
 {
 public:
-	Window(int argc, char **argv, int width, int height, const char *title, RGB **setCanvas);
+	Window(int argc, char **argv, int width, int height, const char *title, RGB **setCanvas, Cenario *setCena);
 	void static update();
 };

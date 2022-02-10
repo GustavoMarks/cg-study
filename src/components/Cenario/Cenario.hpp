@@ -12,4 +12,5 @@ public:
   vector<LuzAmbiente *> luzes;
   Cenario(Camera cam, vector<Objeto *> objs, vector<LuzAmbiente *> luzes);
   void updateCamera(Camera cam);
+  Camera getCamera();
 };

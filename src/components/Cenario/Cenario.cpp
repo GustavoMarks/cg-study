@@ -35,3 +35,8 @@ void Cenario::updateCamera(Camera cam)
     this->luzes.at(i)->cameraTransform(mwc);
   }
 }
+
+Camera Cenario::getCamera()
+{
+  return this->cam;
+}

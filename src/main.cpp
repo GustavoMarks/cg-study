@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     RGB **canvas = rayCasting(*cena, 80, 800, 800, 600, 800);
     // Abrindo uma janela com Open GL
-    Window w(argc, argv, 800, 600, "CG Study", canvas);
+    Window w(argc, argv, 800, 600, "CG Study", canvas, cena);
 
     return 0;
 }

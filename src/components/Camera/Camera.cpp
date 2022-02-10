@@ -32,3 +32,18 @@ Eigen::Matrix4d Camera::gerar_matriz_world_to_cam()
 
   return m_world_to_cam;
 }
+
+Ponto Camera::getEye()
+{
+  return this->eye;
+}
+
+Ponto Camera::getLook_at()
+{
+  return this->look_at;
+}
+
+Ponto Camera::getUp()
+{
+  return this->up;
+}

@@ -11,4 +11,8 @@ public:
   Camera(Ponto eye, Ponto look_at, Ponto up);
   Camera();
   Eigen::Matrix4d gerar_matriz_world_to_cam();
+  
+  Ponto getEye();
+  Ponto getLook_at();
+  Ponto getUp();
 };
