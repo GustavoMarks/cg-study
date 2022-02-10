@@ -1,7 +1,6 @@
 class Cilindro : public Objeto
 {
 private:
-  Ponto b;    // o centro da base do cilindro
   VectorXd u; // é o vetor unitário que define a direção e o sentido do eixo do cilindro;
   float h;    // é a altura do cilindro
   float r;    // é a raio do cilindro
