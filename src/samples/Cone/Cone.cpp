@@ -1,4 +1,6 @@
 #include "../samples.hpp"
+#include <iostream>
+#include <math.h>
 
 Cone::Cone(int id) : Objeto(id)
 {
@@ -6,19 +8,29 @@ Cone::Cone(int id) : Objeto(id)
 
 Cone::Cone(int id, VectorXd n, float h, float r, Ponto cb) : Objeto(id)
 {
-  this->id = id;
+  std::vector<Ponto> pontos;
+  // Ponto central da base
+  pontos.push_back(cb);
+  this->pontos = pontos;
+
   n.normalize();
   this->n = n;
   this->h = h;
   this->r = r;
-  this->cb = cb;
-  this->V = cb + h * n;
 }
 
-bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
+bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min)
 {
-  bool hitedBase = false; // Irá indicar se base foi atingida
-  VectorXd v = this->V - p0;
+  int hitedSide = 0;
+  return this->hitRayGetSide(p0, d, t_min, hitedSide);
+}
+
+bool Cone::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
+{
+  // hitedSide indica onde o cone foi atingido, 1 para lateral, 2 para base
+  hitedSide = 1;
+  Ponto vertice = this->pontos.at(0) + (this->h * this->n);
+  VectorXd v = vertice - p0;
 
   float cos2theta = std::pow(this->h / std::sqrt(std::pow(this->h, 2) + std::pow(this->r, 2)), 2);
   float a = std::pow(d.dot(this->n), 2) - (d.dot(d) * cos2theta);
@@ -29,13 +41,26 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
   if (delta < 0)
     return false;
 
-  float t_int0 = (-1 * b + std::sqrt(delta)) / a;
-  float t_int1 = (-1 * b - std::sqrt(delta)) / a;
+  float t_int0;
+  float t_int1;
+
+  if (a == 0)
+  {
+    // Raio é paralelo a alguma geratriz do cone
+    t_int0 = (-1) * (c / (2 * b));
+    t_int1 = t_int0;
+  }
+  else
+  {
+    t_int0 = (-1 * b + std::sqrt(delta)) / a;
+    t_int1 = (-1 * b - std::sqrt(delta)) / a;
+  }
+
   Ponto p1{{p0.x() + t_int0 * d.x(), p0.y() + t_int0 * d.y(), p0.z() + t_int0 * d.z()}};
   Ponto p2{{p0.x() + t_int1 * d.x(), p0.y() + t_int1 * d.y(), p0.z() + t_int1 * d.z()}};
 
-  float p1_dotproduct = (this->V - p1).dot(this->n);
-  float p2_dotproduct = (this->V - p2).dot(this->n);
+  float p1_dotproduct = (vertice - p1).dot(this->n);
+  float p2_dotproduct = (vertice - p2).dot(this->n);
 
   std::vector<float> intersecoes;
 
@@ -46,18 +71,27 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
 
   if ((int)intersecoes.size() == 1)
   {
-    Plano plano_base(0, this->cb, this->n); // TODO: ver questao do id
+    Plano plano_base(0, this->pontos.at(0), this->n * (-1));
     float t_base;
     bool base_intersecao = plano_base.hitRay(p0, d, t_base);
     if (base_intersecao)
     {
-      Ponto p_base{{p0.x() + t_base * d.x(), p0.y() + t_base * d.y(), p0.z() + t_base * d.z()}};
-      VectorXd cbase = p_base - this->cb;
-      if (t_base >= 0 && cbase.norm() < this->r)
+      // Buscando ponto de interseção entre plano da base e raio
+      Eigen::VectorXd colisedPoint;
+      colisedPoint = p0 + (t_base * d);
+
+      // Calculando distância entre ponto de colisão e centro da base
+      Ponto centroBase = this->pontos.at(0);
+      float distancia = std::sqrt(
+          std::pow(colisedPoint.x() - centroBase.x(), 2) +
+          std::pow(colisedPoint.y() - centroBase.y(), 2) +
+          std::pow(colisedPoint.z() - centroBase.z(), 2));
+
+      if (distancia <= this->r)
         intersecoes.push_back(t_base);
 
-      if (t_base > intersecoes.at(0))
-        hitedBase = true;
+      if (t_base < intersecoes.at(0))
+        hitedSide = 2;
     }
   }
 
@@ -67,33 +101,61 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min, Eigen::Vector3d &n)
     if (intersecoes[i] < t_min)
       t_min = intersecoes[i];
 
-  // Calculando normal
-  if (hitedBase)
-  {
-    n << (-1) * this->n.x(), (-1) * this->n.y(), (-1) * this->n.z();
-  }
-  else
-  {
-    // Salvando ponto de colisão com o raio
-    Eigen::Vector3d p03d;
-    p03d << p0.x(), p0.y(), p0.z();
-    Eigen::Vector3d d3d;
-    d3d << d.x(), d.y(), d.z();
-    Eigen::Vector3d cb3d;
-    cb3d << this->cb.x(), this->cb.y(), this->cb.z();
-    Eigen::Vector3d dc3d;
-    dc3d << this->n.x(), this->n.y(), this->n.z();
-
-    Eigen::Vector3d colisedPoint = p03d + (t_min * d3d);
-
-    Eigen::Vector3d W;
-
-    W = colisedPoint - cb3d;
-    W = dc3d.cross(W);
-    n = this->V - colisedPoint;
-    n = W.cross(n);
-    n.normalize();
-  }
-
   return num_intersecoes > 0;
+}
+
+bool Cone::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
+{
+  float t_min_light;
+  int side = 0;
+  bool resultHit = this->hitRayGetSide(p0Light, dLight, t_min_light, side);
+  if (resultHit)
+  {
+    // Calculando ponto de interseção entre luz e objeto
+    Eigen::VectorXd colisedPoint;
+    colisedPoint = p0Light + (t_min_light * dLight);
+    Eigen::VectorXd cpvXd{{colisedPointView.x(), colisedPointView.y(), colisedPointView.z()}};
+
+    if (!colisedPoint.isApprox(cpvXd, 0.1))
+    {
+      return false;
+    }
+
+    // Calculando vetor normal
+    if (side == 2)
+    {
+      // Base
+      n << (-1) * this->n.x(), (-1) * this->n.y(), (-1) * this->n.z();
+    }
+    if (side == 1)
+    {
+      // Lateral
+      Ponto vertice = this->pontos.at(0) + (this->h * this->n);
+      Eigen::Vector3d vertice3d;
+      vertice3d << vertice.x(), vertice.y(), vertice.z();
+      Eigen::Vector3d p03d;
+      p03d << p0Light.x(), p0Light.y(), p0Light.z();
+      Eigen::Vector3d d3d;
+      d3d << dLight.x(), dLight.y(), dLight.z();
+      Eigen::Vector3d cb3d;
+      cb3d << this->pontos.at(0).x(), this->pontos.at(0).y(), this->pontos.at(0).z();
+      Eigen::Vector3d dc3d;
+      dc3d << this->n.x(), this->n.y(), this->n.z();
+
+      Eigen::Vector3d colisedPoint = p03d + (t_min_light * d3d);
+
+      Eigen::Vector3d W;
+
+      W = colisedPoint - cb3d;
+      W = dc3d.cross(W);
+      n = vertice3d - colisedPoint;
+      n = W.cross(n);
+    }
+
+    n.normalize();
+
+    return true;
+  }
+
+  return false;
 }
