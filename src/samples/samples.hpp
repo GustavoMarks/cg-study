@@ -5,3 +5,4 @@
 #include "./Plano/Plano.hpp"
 #include "./Cilindro/Cilindro.hpp"
 #include "./Cone/Cone.hpp"
+#include "./FaceTriangular/FaceTriangular.hpp"

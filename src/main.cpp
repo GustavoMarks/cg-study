@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     // jarro->escalar(2, 2, 2);
 
     Ponto po{{0.0, 0.0, 0.0}};
-    Ponto poc{{0, 0, 0}};
+    Ponto poc{{3, 20, 0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), poc, 6);
     esf->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
@@ -55,18 +55,25 @@ int main(int argc, char **argv)
     Plano *plano = new Plano(idController->generateNewUID(), pPlano, dPlano);
     plano->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto eye{{0, 20, 4}};
+    Ponto p1Triang{{0, 0, 0}};
+    Ponto p2Triang{{3, 0, 0}};
+    Ponto p3Triang{{0, 3, 0}};
+    FaceTriangular *fteste = new FaceTriangular(idController->generateNewUID(), p1Triang, p2Triang, p3Triang);
+    fteste->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    Ponto eye{{0, 0, 10}};
     Ponto la{{0, 0, 0}};
-    Ponto lu{{10, 10, 0}};
+    Ponto lu{{0, 10, 0}};
 
     Camera *cam = new Camera(eye, la, lu);
     vector<Objeto *> objList;
     // objList.push_back(cubo2);
     // objList.push_back(jarro);
-    objList.push_back(cil);
+    // objList.push_back(cil);
     // objList.push_back(con);
-    // objList.push_back(esf);
     // objList.push_back(plano);
+    objList.push_back(fteste);
+    objList.push_back(esf);
 
     // Descrevendo luzes
     vector<LuzAmbiente *> luzList;
@@ -75,7 +82,7 @@ int main(int argc, char **argv)
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
     Eigen::Vector3d ldr;
-    ldr << -1, -1, 0;
+    ldr << 0, 0, -1;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
     Ponto pontoDeLuz{{100, 100, 100}};
