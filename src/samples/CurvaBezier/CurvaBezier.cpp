@@ -27,7 +27,7 @@ double CurvaBezier::b_4(double t)
 }
 
 CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto p1, Ponto p2, Ponto p3, int id)
-: Malha(id)
+		: Objeto(id)
 {
 	// preenchendo os vertices
 	vector<Ponto> vertices;
@@ -44,7 +44,7 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 			// Coordinates x, y, z of the vertices defined when a parallel
 			// circle crosses a meridian profile curve.
 			double x = r * cos((2.0 * PI / num_meridianos) * (float)i);
-			double y = r * cos((2.0 * PI / num_meridianos) * (float)i);
+			double y = r * sin((2.0 * PI / num_meridianos) * (float)i);
 			Ponto p{{x, y, z}};
 
 			vertices.push_back(p);
@@ -52,7 +52,8 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 	}
 
 	// preenchendo as faces com arestas no sentido anti-horario
-	std::vector<Face> faces;
+	vector<FaceTriangular> faces;
+	int id = 0;
 	// cada quadrado tem duas faces triangulares
 	for (int i = 0; i < num_paralelos - 1; i++)
 	{
@@ -65,17 +66,14 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 			Aresta a_diagonal = make_pair(p_esq_inf, p_dir_sup);
 
 			// face triagular inferior
-			Aresta a1 = make_pair(p_esq_inf, p_dir_inf);
-			Aresta a2 = make_pair(p_dir_inf, p_dir_sup);
-			Face f1 = make_tuple(a_diagonal, a1, a2);
-
+			FaceTriangular f_inf(id, p_esq_inf, p_dir_inf, p_esq_sup);
+			id++;
 			// face triagular superior
-			Aresta a3 = make_pair(p_esq_sup, p_dir_sup);
-			Aresta a4 = make_pair(p_esq_sup, p_esq_inf);
-			Face f2 = make_tuple(a3, a4, a_diagonal);
+			FaceTriangular f_sup(id, p_esq_sup, p_dir_inf, p_dir_sup);
+			id++;
 
-			faces.push_back(f1);
-			faces.push_back(f2);
+			faces.push_back(f_inf);
+			faces.push_back(f_sup);
 		}
 	}
 
