@@ -65,6 +65,14 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
         // Simulando feixos de luzes paralelos da luz direcional
         if (luzAtual->luzType == 2)
           OriginLight = colisedPoint - OriginLight;
+
+        // Tratando raios de luz em múltiplas direções de luz pontual e spot
+        if (luzAtual->luzType == 3 || luzAtual->luzType == 4)
+        {
+          lightDir = colisedPoint - OriginLight;
+          lightDir.normalize();
+        }
+
         Eigen::Vector3d normal;
 
         // Verificando se o ponto do objeto é iluminado
