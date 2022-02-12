@@ -1,12 +1,9 @@
 #include "../samples.hpp"
-#include "../../components/Ponto.hpp"
-#include "../../components/Aresta.hpp"
-#include "../../components/Face.hpp"
 
 using namespace std;
 
-Cubo::Cubo(double side, int id)
-: Malha(id)
+Cubo::Cubo(int id, double side)
+    : Objeto(id)
 {
     Ponto p1{{0, 0, 0}};
     Ponto p2{{side, 0, 0}};
@@ -17,53 +14,129 @@ Cubo::Cubo(double side, int id)
     Ponto p7{{side, side, side}};
     Ponto p8{{0, side, side}};
 
-    Aresta a1 = make_pair(p1, p5);
-    Aresta a2 = make_pair(p5, p2);
-    Aresta a3 = make_pair(p2, p1);
-    Aresta a4 = make_pair(p5, p6);
-    Aresta a5 = make_pair(p6, p2);
+    vector<FaceTriangular> faces;
+    FaceTriangular f1(0, p8, p3, p4);
+    FaceTriangular f2(1, p8, p7, p3);
+    FaceTriangular f3(2, p7, p2, p6);
+    FaceTriangular f4(3, p3, p2, p7);
+    FaceTriangular f5(4, p2, p1, p6);
+    FaceTriangular f6(5, p6, p1, p5);
+    FaceTriangular f7(6, p5, p1, p4);
+    FaceTriangular f8(7, p5, p4, p8);
+    FaceTriangular f9(8, p5, p7, p8);
+    FaceTriangular f10(9, p5, p6, p7);
+    FaceTriangular f11(10, p2, p3, p4);
+    FaceTriangular f12(11, p4, p1, p2);
 
-    Aresta a6 = make_pair(p1, p4);
-    Aresta a7 = make_pair(p4, p8);
-    Aresta a8 = make_pair(p8, p1);
-    Aresta a9 = make_pair(p8, p5);
+    faces.push_back(f1);
+    faces.push_back(f2);
+    faces.push_back(f3);
+    faces.push_back(f4);
+    faces.push_back(f5);
+    faces.push_back(f6);
+    faces.push_back(f7);
+    faces.push_back(f8);
+    faces.push_back(f9);
+    faces.push_back(f10);
+    faces.push_back(f11);
+    faces.push_back(f12);
 
-    Aresta a10 = make_pair(p8, p7);
-    Aresta a11 = make_pair(p7, p5);
-    Aresta a12 = make_pair(p7, p6);
+    this->faces = faces;
+}
 
-    Aresta a13 = make_pair(p7, p3);
-    Aresta a14 = make_pair(p3, p6);
+void Cubo::transladar(Ponto t)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).transladar(t);
+    }
+}
 
-    Aresta a15 = make_pair(p3, p2);
-    Aresta a16 = make_pair(p2, p4);
-    Aresta a17 = make_pair(p4, p3);
+void Cubo::rotacionar(int plan, double ang)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).rotacionar(plan, ang);
+    }
+}
 
-    Aresta a18 = make_pair(p4, p7);
+void Cubo::rotacionar(Ponto P1, Ponto P2, double ang)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).rotacionar(P1, P2, ang);
+    }
+}
 
-    // Faces frontais
-    Face f1 = make_tuple(a18, a10, a7);
-    Face f2 = make_tuple(a17, a13, a18);
+void Cubo::escalar(double sx, double sy, double sz)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).escalar(sx, sy, sz);
+    }
+}
 
-    // Faces direitas
-    Face f3 = make_tuple(a13, a14, a12);
-    Face f4 = make_tuple(a15, a5, a14);
+void Cubo::cisalhar(double ang_onX_planXYZ)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).cisalhar(ang_onX_planXYZ);
+    }
+}
 
-    // Faces do fundo
-    Face f5 = make_tuple(a3, a1, a2);
-    Face f6 = make_tuple(a2, a4, a5);
+void Cubo::refletir(int plan)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).refletir(plan);
+    }
+}
 
-    // Faces da esquerda
-    Face f7 = make_tuple(a1, a8, a9);
-    Face f8 = make_tuple(a8, a6, a7);
+void Cubo::refletir(Ponto A, Ponto B, Ponto C)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).refletir(A, B, C);
+    }
+}
 
-    // Faces do topo
-    Face f9 = make_tuple(a10, a11, a9);
-    Face f10 = make_tuple(a11, a12, a4);
+bool Cubo::hitRay(VectorXd p0, VectorXd d, float &t_min)
+{
+    bool result = false;
+    float aux = 100000000000000;
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        bool localResult = this->faces.at(i).hitRay(p0, d, t_min);
+        if (localResult)
+        {
+            result = localResult;
+            if (aux < t_min)
+                t_min = aux;
+            else
+                aux = t_min;
+        }
+    }
 
-    // Faces de baixo
-    Face f11 = make_tuple(a17, a16, a15);
-    Face f12 = make_tuple(a16, a6, a3);
+    return result;
+}
 
-    this->faces = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12};
+bool Cubo::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
+{
+    bool result = false;
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        bool localResult = this->faces.at(i).hitLight(colisedPointView, p0Light, dLight, n);
+        if (localResult)
+            result = localResult;
+    }
+
+    return result;
+}
+
+void Cubo::cameraTransform(Eigen::Matrix4d mwc)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).cameraTransform(mwc);
+    }
 }

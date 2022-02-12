@@ -8,4 +8,5 @@ public:
 
 	bool hitRay(VectorXd p0, VectorXd d, float &t_min);
 	bool hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n);
+	void cameraTransform(Eigen::Matrix4d mwc);
 };

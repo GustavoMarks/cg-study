@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     // jarro->escalar(2, 2, 2);
 
     Ponto po{{0.0, 0.0, 0.0}};
-    Ponto poc{{3, 20, 0}};
+    Ponto poc{{0, 0, 0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), poc, 6);
     esf->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     // objList.push_back(cil);
     // objList.push_back(con);
     // objList.push_back(plano);
-    objList.push_back(fteste);
+    // objList.push_back(fteste);
     objList.push_back(esf);
 
     // Descrevendo luzes

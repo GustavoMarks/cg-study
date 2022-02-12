@@ -42,7 +42,6 @@ bool FaceTriangular::hitRay(VectorXd p0, VectorXd d, float &t_min)
 
 	// Criando plano da face para calcular interseção
 	Eigen::VectorXd normal{{normal_3d.x(), normal_3d.y(), normal_3d.z()}};
-	// std::cout << normal.z() << std::endl;
 	Plano planoFace(0, p1, normal);
 
 	// Verificando se raio atinge face
@@ -62,12 +61,22 @@ bool FaceTriangular::hitRay(VectorXd p0, VectorXd d, float &t_min)
 		return false;
 
 	Eigen::Vector3d a_eta = (p2_3d - colised_3d).cross(p3_3d - colised_3d);
+	a_eta.normalize();
 	if (a_eta.dot(normal_3d) < 0)
 		return false;
 
 	Eigen::Vector3d a_zeta = (p3_3d - colised_3d).cross(p1_3d - colised_3d);
+	a_zeta.normalize();
 	if (a_zeta.dot(normal_3d) < 0)
 		return false;
+
+	// double ks = a_ks.norm();
+	// double eta = a_eta.norm();
+	// double zeta = 1 - eta - ks;
+	// if (zeta < 0)
+	// {
+	// 	false;
+	// }
 
 	return true;
 }
@@ -107,3 +116,7 @@ bool FaceTriangular::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd
 
 	return false;
 }
+
+void FaceTriangular::cameraTransform(Eigen::Matrix4d mwc){
+
+};
