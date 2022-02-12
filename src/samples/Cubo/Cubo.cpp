@@ -5,6 +5,7 @@ using namespace std;
 Cubo::Cubo(int id, double side)
     : Objeto(id)
 {
+    // Montando um cubo na origem do sistema
     Ponto p1{{0, 0, 0}};
     Ponto p2{{side, 0, 0}};
     Ponto p3{{side, 0, side}};
@@ -15,17 +16,23 @@ Cubo::Cubo(int id, double side)
     Ponto p8{{0, side, side}};
 
     vector<FaceTriangular> faces;
-    FaceTriangular f1(0, p8, p3, p4);
-    FaceTriangular f2(1, p8, p7, p3);
-    FaceTriangular f3(2, p7, p2, p6);
-    FaceTriangular f4(3, p3, p2, p7);
-    FaceTriangular f5(4, p2, p1, p6);
-    FaceTriangular f6(5, p6, p1, p5);
-    FaceTriangular f7(6, p5, p1, p4);
-    FaceTriangular f8(7, p5, p4, p8);
-    FaceTriangular f9(8, p5, p7, p8);
-    FaceTriangular f10(9, p5, p6, p7);
-    FaceTriangular f11(10, p2, p3, p4);
+    // Faces traseiras
+    FaceTriangular f1(0, p1, p5, p2);
+    FaceTriangular f2(1, p2, p5, p6);
+    // Faces lateral esquerda
+    FaceTriangular f3(2, p5, p1, p4);
+    FaceTriangular f4(3, p5, p4, p8);
+    // Faces frontais
+    FaceTriangular f5(4, p8, p4, p3);
+    FaceTriangular f6(5, p8, p3, p7);
+    // Faces lateral direita
+    FaceTriangular f7(6, p7, p3, p2);
+    FaceTriangular f8(7, p7, p2, p6);
+    // Faces topo
+    FaceTriangular f9(8, p7, p6, p5);
+    FaceTriangular f10(9, p7, p5, p8);
+    // Faces base
+    FaceTriangular f11(10, p3, p4, p2);
     FaceTriangular f12(11, p4, p1, p2);
 
     faces.push_back(f1);

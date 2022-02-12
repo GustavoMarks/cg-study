@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     // jarro->escalar(2, 2, 2);
 
     Ponto po{{0.0, 0.0, 0.0}};
-    Ponto poc{{0, 0, 0}};
+    Ponto poc{{0, 30, 0}};
     Ponto pe{{0.0, 0.0, 3.0}};
     Esfera *esf = new Esfera(idController->generateNewUID(), poc, 6);
     esf->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
@@ -47,27 +47,27 @@ int main(int argc, char **argv)
     Cone *con = new Cone(idController->generateNewUID(), u, 4, 4, po);
     con->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Cubo *cubo2 = new Cubo(2.0, idController->generateNewUID());
+    Cubo *cubo2 = new Cubo(idController->generateNewUID(), 10);
     cubo2->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto pPlano{{0, -4, 0}};
+    Ponto pPlano{{4, 0, 0}};
     Eigen::VectorXd dPlano{{0, 1, 0}};
     Plano *plano = new Plano(idController->generateNewUID(), pPlano, dPlano);
     plano->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto p1Triang{{0, 0, 0}};
-    Ponto p2Triang{{3, 0, 0}};
-    Ponto p3Triang{{0, 3, 0}};
+    Ponto p1Triang{{4, 0, 0}};
+    Ponto p2Triang{{0, 0, 4}};
+    Ponto p3Triang{{4, 0, 4}};
     FaceTriangular *fteste = new FaceTriangular(idController->generateNewUID(), p1Triang, p2Triang, p3Triang);
     fteste->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto eye{{0, 0, 10}};
-    Ponto la{{0, 0, 0}};
+    Ponto eye{{-4, -2, 12}};
+    Ponto la{{0, 0, 4}};
     Ponto lu{{0, 10, 0}};
 
     Camera *cam = new Camera(eye, la, lu);
     vector<Objeto *> objList;
-    // objList.push_back(cubo2);
+    objList.push_back(cubo2);
     // objList.push_back(jarro);
     // objList.push_back(cil);
     // objList.push_back(con);
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     LuzAmbiente *luzAmbienteBranca = new LuzAmbiente(*luzBranca);
 
     Eigen::Vector3d ldr;
-    ldr << 0, 0, -1;
+    ldr << 1, 1, 0;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
     Ponto pontoDeLuz{{100, 100, 100}};

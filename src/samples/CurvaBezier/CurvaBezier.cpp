@@ -53,7 +53,7 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 
 	// preenchendo as faces com arestas no sentido anti-horario
 	vector<FaceTriangular> faces;
-	int id = 0;
+	int idFace = 0;
 	// cada quadrado tem duas faces triangulares
 	for (int i = 0; i < num_paralelos - 1; i++)
 	{
@@ -66,11 +66,11 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 			Aresta a_diagonal = make_pair(p_esq_inf, p_dir_sup);
 
 			// face triagular inferior
-			FaceTriangular f_inf(id, p_esq_inf, p_dir_inf, p_esq_sup);
-			id++;
+			FaceTriangular f_inf(idFace, p_esq_inf, p_dir_inf, p_esq_sup);
+			idFace++;
 			// face triagular superior
-			FaceTriangular f_sup(id, p_esq_sup, p_dir_inf, p_dir_sup);
-			id++;
+			FaceTriangular f_sup(idFace, p_esq_sup, p_dir_inf, p_dir_sup);
+			idFace++;
 
 			faces.push_back(f_inf);
 			faces.push_back(f_sup);
