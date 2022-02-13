@@ -1,4 +1,4 @@
-#include "../../components/Malha/Malha.hpp"
+#include "../../components/Cluster/Cluster.hpp"
 #include <eigen-3.4.0/Eigen/Dense>
 
 class LuzAmbiente

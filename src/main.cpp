@@ -375,10 +375,10 @@ int main(int argc, char **argv)
     cluster_pai.addCluster(cil_cluster_filho2);
     */
 
-    Cenario *cena = new Cenario(*cam, objList, luzList);
+    // Cenario *cena = new Cenario(*cam, objList, luzList);
 
-    // Abrindo uma janela com Open GL
-    Window w(argc, argv, 800, 600, "CG Study", cena);
+    // // Abrindo uma janela com Open GL
+    // Window w(argc, argv, 800, 600, "CG Study", cena);
 
     return 0;
 }

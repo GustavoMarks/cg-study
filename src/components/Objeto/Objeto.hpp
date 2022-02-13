@@ -9,6 +9,7 @@ public:
   int id;
   std::vector<Ponto> pontos;
 
+  Objeto();
   Objeto(int id);
   Objeto(int id, std::vector<Ponto> pontos);
 

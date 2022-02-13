@@ -1,8 +1,13 @@
-classe Cluster {
+#include "../Objeto/Objeto.hpp"
+#include <vector>
+
+class Cluster
+{
 public:
   Objeto obj_geometrico;
-  vector<Cluster> clusters_filho;
-  vector<Objeto> objs_filho;
+  std::vector<Cluster> clusters_filho;
+  std::vector<Objeto *> objs_filho;
+  Cluster();
   Cluster(Objeto obj_geometrico);
   void addCluster(Cluster cluster_filho);
   void addObjeto(Objeto obj_filho);

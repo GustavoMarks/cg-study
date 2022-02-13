@@ -1,6 +1,5 @@
 #include "../Luz/Luz.hpp"
 #include "../Camera/Camera.hpp"
-#include "../Cluster/Cluster.hpp"
 #include <vector>
 
 using std::vector;

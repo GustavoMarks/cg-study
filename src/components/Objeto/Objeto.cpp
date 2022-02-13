@@ -7,6 +7,10 @@
 
 using namespace std;
 
+Objeto::Objeto()
+{
+}
+
 Objeto::Objeto(int id)
 {
   this->id = id;
@@ -267,7 +271,7 @@ void Objeto::refletir(int plan)
     v << p.x(), p.y(), p.z();
 
     v = e * v;
-    Ponto updatePoint{{v(0), v(1), v(2)}};
+    Ponto updatePoint{{v.x(), v.y(), v.z()}};
 
     updatedPointsList.push_back(updatePoint);
   }

@@ -1,6 +1,4 @@
 #include "../samples.hpp"
-#include "../../components/Face.hpp"
-#include "../../components/Aresta.hpp"
 #include <vector>
 
 using namespace std;
@@ -63,7 +61,6 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 			Ponto p_dir_inf = vertices[j + 1];
 			Ponto p_esq_sup = vertices[j + num_meridianos + 1];
 			Ponto p_dir_sup = vertices[j + num_meridianos + 2];
-			Aresta a_diagonal = make_pair(p_esq_inf, p_dir_sup);
 
 			// face triagular inferior
 			FaceTriangular f_inf(idFace, p_esq_inf, p_dir_inf, p_esq_sup);
