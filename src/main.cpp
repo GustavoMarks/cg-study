@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     // fteste->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     // Montando câmera
-    Ponto eye{{0, 6, 20}};
+    Ponto eye{{0, 12, 32}};
     Ponto la{{0, 0, 1}};
     Ponto lu{{0, 100, 0}};
     Camera *cam = new Camera(eye, la, lu);
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     Esfera *esf_topo_peao = new Esfera(idController->generateNewUID(), p_topo_peao, 4);
     esf_topo_peao->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto toTranslate{{50, 0, 0}};
+    Ponto toTranslate{{70, 0, 0}};
     con_corpo1_peao->transladar(toTranslate);
     cil_base1_peao->transladar(toTranslate);
     cil_base2_peao->transladar(toTranslate);
@@ -118,10 +118,10 @@ int main(int argc, char **argv)
     Cone *con_corpo1_torre = new Cone(idController->generateNewUID(), eixo_pecas, 26, 6, p_incio_corpo1_torre);
     con_corpo1_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
     Ponto p_topo_torre{{0, 26, 0}};
-    Cilindro *cil_topo_torre = new Cilindro(idController->generateNewUID(), p_topo_torre, eixo_pecas, 4, 4);
+    Cilindro *cil_topo_torre = new Cilindro(idController->generateNewUID(), p_topo_torre, eixo_pecas, 6, 4);
     cil_topo_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
-    Ponto toTranslateTorre{{25, 0, 0}};
+    Ponto toTranslateTorre{{45, 0, 0}};
     con_corpo1_torre->transladar(toTranslateTorre);
     cil_base1_torre->transladar(toTranslateTorre);
     cil_base2_torre->transladar(toTranslateTorre);
@@ -140,17 +140,130 @@ int main(int argc, char **argv)
     cil_base2_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
     Ponto p_incio_corpo1_cavalo{{0, 7, 0}};
     Eigen::VectorXd eixo_corpo_cavalo{{0.2, 1, 0}};
-    Cone *con_corpo1_cavalo = new Cone(idController->generateNewUID(), eixo_corpo_cavalo, 26, 6, p_incio_corpo1_cavalo);
+    Cone *con_corpo1_cavalo = new Cone(idController->generateNewUID(), eixo_corpo_cavalo, 26, 8, p_incio_corpo1_cavalo);
     con_corpo1_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
     Ponto p_topo_cavalo{{4, 28, 0}};
     Eigen::VectorXd eixo_cabeca_cavalo{{-1, 0, 0}};
     Cilindro *cil_topo_cavalo = new Cilindro(idController->generateNewUID(), p_topo_cavalo, eixo_cabeca_cavalo, 8, 3);
     cil_topo_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
+    Ponto toTranslateCavalo{{20, 0, 0}};
+    con_corpo1_cavalo->transladar(toTranslateCavalo);
+    cil_base1_cavalo->transladar(toTranslateCavalo);
+    cil_base2_cavalo->transladar(toTranslateCavalo);
+    cil_topo_cavalo->transladar(toTranslateCavalo);
+
     objList.push_back(con_corpo1_cavalo);
     objList.push_back(cil_base1_cavalo);
     objList.push_back(cil_base2_cavalo);
     objList.push_back(cil_topo_cavalo);
+
+    // Montando um bispo
+    Ponto p_baseBispo{{0, 0, 0}};
+    Cilindro *cil_base1_bispo = new Cilindro(idController->generateNewUID(), p_baseBispo, eixo_pecas, 4, 8);
+    cil_base1_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_base2_bispo = new Cilindro(idController->generateNewUID(), p_baseBispo, eixo_pecas, 8, 6);
+    cil_base2_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_incio_corpo1_bispo{{0, 7, 0}};
+    Cone *con_corpo1_bispo = new Cone(idController->generateNewUID(), eixo_pecas, 26, 4, p_incio_corpo1_bispo);
+    con_corpo1_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_corpo2_bispo{{0, 23, 0}};
+    Cilindro *cil_corpo2_bispo = new Cilindro(idController->generateNewUID(), p_corpo2_bispo, eixo_pecas, 1, 4);
+    cil_corpo2_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo_bispo{{0, 28, 0}};
+    Esfera *esf_topo_bispo = new Esfera(idController->generateNewUID(), p_topo_bispo, 4);
+    esf_topo_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo2_bispo{{0, 30, 0}};
+    Cone *con_topo2_bispo = new Cone(idController->generateNewUID(), eixo_pecas, 6, 4, p_topo2_bispo);
+    con_topo2_bispo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    Ponto toTranslateBispo{{-20, 0, 0}};
+    con_corpo1_bispo->transladar(toTranslateBispo);
+    cil_base1_bispo->transladar(toTranslateBispo);
+    cil_base2_bispo->transladar(toTranslateBispo);
+    cil_corpo2_bispo->transladar(toTranslateBispo);
+    esf_topo_bispo->transladar(toTranslateBispo);
+    con_topo2_bispo->transladar(toTranslateBispo);
+
+    objList.push_back(con_corpo1_bispo);
+    objList.push_back(cil_base1_bispo);
+    objList.push_back(cil_base2_bispo);
+    objList.push_back(cil_corpo2_bispo);
+    objList.push_back(esf_topo_bispo);
+    objList.push_back(con_topo2_bispo);
+
+    // Montando uma rainha
+    Ponto p_baseRainha{{0, 0, 0}};
+    Cilindro *cil_base1_rainha = new Cilindro(idController->generateNewUID(), p_baseRainha, eixo_pecas, 4, 8);
+    cil_base1_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_base2_rainha = new Cilindro(idController->generateNewUID(), p_baseRainha, eixo_pecas, 8, 6);
+    cil_base2_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_incio_corpo1_rainha{{0, 7, 0}};
+    Cone *con_corpo1_rainha = new Cone(idController->generateNewUID(), eixo_pecas, 28, 4, p_incio_corpo1_rainha);
+    con_corpo1_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_corpo2_rainha{{0, 25, 0}};
+    Cilindro *cil_corpo2_rainha = new Cilindro(idController->generateNewUID(), p_corpo2_rainha, eixo_pecas, 1, 4);
+    cil_corpo2_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo1_rainha{{0, 32, 0}};
+    Cone *con_topo1_rainha = new Cone(idController->generateNewUID(), (-1) * eixo_pecas, 8, 6, p_topo1_rainha);
+    con_topo1_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo_rainha{{0, 34, 0}};
+    Esfera *esf_topo_rainha = new Esfera(idController->generateNewUID(), p_topo_rainha, 2);
+    esf_topo_rainha->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    Ponto toTranslateRainha{{-45, 0, 0}};
+    con_corpo1_rainha->transladar(toTranslateRainha);
+    cil_base1_rainha->transladar(toTranslateRainha);
+    cil_base2_rainha->transladar(toTranslateRainha);
+    cil_corpo2_rainha->transladar(toTranslateRainha);
+    esf_topo_rainha->transladar(toTranslateRainha);
+    con_topo1_rainha->transladar(toTranslateRainha);
+
+    objList.push_back(con_corpo1_rainha);
+    objList.push_back(cil_base1_rainha);
+    objList.push_back(cil_base2_rainha);
+    objList.push_back(cil_corpo2_rainha);
+    objList.push_back(esf_topo_rainha);
+    objList.push_back(con_topo1_rainha);
+
+    // Montando um rei
+    Ponto p_baseRei{{0, 0, 0}};
+    Cilindro *cil_base1_rei = new Cilindro(idController->generateNewUID(), p_baseRei, eixo_pecas, 4, 8);
+    cil_base1_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_base2_rei = new Cilindro(idController->generateNewUID(), p_baseRei, eixo_pecas, 8, 6);
+    cil_base2_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_incio_corpo1_rei{{0, 7, 0}};
+    Cone *con_corpo1_rei = new Cone(idController->generateNewUID(), eixo_pecas, 28, 4, p_incio_corpo1_rei);
+    con_corpo1_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_corpo2_rei{{0, 25, 0}};
+    Cilindro *cil_corpo2_rei = new Cilindro(idController->generateNewUID(), p_corpo2_rei, eixo_pecas, 1, 4);
+    cil_corpo2_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo1_rei{{0, 34, 0}};
+    Cone *con_topo1_rei = new Cone(idController->generateNewUID(), (-1) * eixo_pecas, 8, 6, p_topo1_rei);
+    con_topo1_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_topo2_rei = new Cilindro(idController->generateNewUID(), p_topo1_rei, eixo_pecas, 6, 1);
+    cil_topo2_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Eigen::VectorXd eixo_deitado{{1, 0, 0}};
+    Ponto p_base_cil_topo_rei{{-3, 38, 0}};
+    Cilindro *cil_topo3_rei = new Cilindro(idController->generateNewUID(), p_base_cil_topo_rei, eixo_deitado, 6, 1);
+    cil_topo3_rei->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    Ponto toTranslateRei{{-70, 0, 0}};
+    con_corpo1_rei->transladar(toTranslateRei);
+    cil_base1_rei->transladar(toTranslateRei);
+    cil_base2_rei->transladar(toTranslateRei);
+    cil_corpo2_rei->transladar(toTranslateRei);
+    con_topo1_rei->transladar(toTranslateRei);
+    cil_topo2_rei->transladar(toTranslateRei);
+    cil_topo3_rei->transladar(toTranslateRei);
+
+    objList.push_back(con_corpo1_rei);
+    objList.push_back(cil_base1_rei);
+    objList.push_back(cil_base2_rei);
+    objList.push_back(cil_corpo2_rei);
+    objList.push_back(con_topo1_rei);
+    objList.push_back(cil_topo2_rei);
+    objList.push_back(cil_topo3_rei);
 
     // Descrevendo luzes
     vector<LuzAmbiente *> luzList;
