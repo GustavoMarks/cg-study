@@ -359,6 +359,22 @@ int main(int argc, char **argv)
     luzList.push_back(luzAmbienteBranca);
     luzList.push_back(luzDirBranca);
     // luzList.push_back(luzPontualBranca);
+
+    /*
+    // Clusters
+    // Criando cluster pai
+    Cilindro *cil_cluster_pai = new Cilindro(idController->generateNewUID(), p_baseBispo, eixo_pecas, 4, 8);
+    Cluster cluster_pai(cil_cluster_pai);
+    // Criando cluster filho que contém a mesa e o jarro
+    Cilindro *cil_cluster_filho1 = new Cilindro(idController->generateNewUID(), p_baseBispo, eixo_pecas, 4, 8);
+    // cil_cluster_filho1.addObjeto(...);
+    cluster_pai.addCluster(cil_cluster_filho1);
+    // Criando cluster filho que contém o tabuleiro e as peças
+    Cilindro *cil_cluster_filho2 = new Cilindro(idController->generateNewUID(), p_baseBispo, eixo_pecas, 4, 8);
+    // cil_cluster_filho2.addObjeto(...);
+    cluster_pai.addCluster(cil_cluster_filho2);
+    */
+
     Cenario *cena = new Cenario(*cam, objList, luzList);
 
     // Abrindo uma janela com Open GL
