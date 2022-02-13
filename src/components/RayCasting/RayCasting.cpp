@@ -10,23 +10,22 @@ RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
 
   float deltaX = W / ncolunas;
   float deltaY = H / nlinhas;
-  float p00x = -(W / 2) + (1 / 2) * deltaX;
-  float p00y = (H / 2) - (1 / 2) * deltaY;
+  float p00x = -(W / 2) + ((1 / 2) * deltaX);
+  float p00y = (H / 2) - ((1 / 2) * deltaY);
 
   cout << "executando raycasting..." << endl;
 
   for (int l = 0; l < nlinhas; l++)
   {
     canvas[l] = new RGB[ncolunas];
-    Ponto plc{{0.0, p00y - l * deltaY, -d}};
     for (int c = 0; c < ncolunas; c++)
     {
-      plc(0) = p00x + c * deltaX;
+      // plc(0) = p00x + (c * deltaX);
+      Ponto plc{{p00x + (c * deltaX), p00y - (l * deltaY), -d}};
       Ray raio(cenario.cam.eye, plc);
       RGBIntesity *I = new RGBIntesity();
       bool intersecao = raio.computarIntersecao(cenario, *I);
 
-      // TODO: Calcular cor e luminosidade
       if (intersecao)
       {
         canvas[l][c].r = 255 * I->r;

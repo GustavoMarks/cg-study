@@ -10,13 +10,16 @@ Cilindro::Cilindro(int id) : Objeto(id)
 
 Cilindro::Cilindro(int id, Ponto b, VectorXd u, float h, float r) : Objeto(id)
 {
+  // u é o vetor unitário que define a direção e o sentido do eixo do cilindro;
   std::vector<Ponto> pontos;
   // o centro da base do cilindro
   pontos.push_back(b);
+
+  // Ponto do topo do cilindro;
+  Ponto ct{{u.x() * (b.x() + h), u.y() * (b.y() + h), u.z() * (b.z() + h)}};
+  pontos.push_back(ct);
   this->pontos = pontos;
 
-  u.normalize();
-  this->u = u;
   this->h = h;
   this->r = r;
 }
@@ -29,13 +32,16 @@ bool Cilindro::hitRay(VectorXd p0, VectorXd d, float &t_min)
 
 bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
 {
+  VectorXd cilDir;
+  cilDir = this->pontos.at(1) - this->pontos.at(0);
+  cilDir.normalize();
   // Irá indicar o lado atingida primeiro com 1 (topo), 2 (base), 3 (lateral)
   bool hitBase = false;
   bool hitTop = false;
   bool hitSide = false;
 
-  VectorXd v = (p0 - this->pontos.at(0)) - ((p0 - this->pontos.at(0)).dot(this->u) * u);
-  VectorXd w = d - (d.dot(this->u) * u);
+  VectorXd v = (p0 - this->pontos.at(0)) - ((p0 - this->pontos.at(0)).dot(cilDir) * cilDir);
+  VectorXd w = d - (d.dot(cilDir) * cilDir);
 
   float a = w.dot(w);
   float b = v.dot(w);
@@ -61,8 +67,8 @@ bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSi
 
     Ponto p1 = p0 + (t_int0 * d);
     Ponto p2 = p0 + (t_int1 * d);
-    float p1_dotproduct = (p1 - this->pontos.at(0)).dot(this->u);
-    float p2_dotproduct = (p2 - this->pontos.at(0)).dot(this->u);
+    float p1_dotproduct = (p1 - this->pontos.at(0)).dot(cilDir);
+    float p2_dotproduct = (p2 - this->pontos.at(0)).dot(cilDir);
 
     if (0 <= p1_dotproduct && p1_dotproduct <= this->h)
       intersecoes.push_back(t_int0);
@@ -76,12 +82,12 @@ bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSi
   if ((int)intersecoes.size() < 2)
   {
     Ponto centro_topo{{
-        this->pontos.at(0).x() + (this->h * this->u.x()),
-        this->pontos.at(0).y() + (this->h * this->u.y()),
-        this->pontos.at(0).z() + (this->h * this->u.z()),
+        this->pontos.at(0).x() + (this->h * cilDir.x()),
+        this->pontos.at(0).y() + (this->h * cilDir.y()),
+        this->pontos.at(0).z() + (this->h * cilDir.z()),
     }};
-    Plano plano_base(0, this->pontos.at(0), this->u * (-1));
-    Plano plano_topo(1, centro_topo, this->u);
+    Plano plano_base(0, this->pontos.at(0), cilDir * (-1));
+    Plano plano_topo(1, centro_topo, cilDir);
 
     bool base_intersecao = plano_base.hitRay(p0, d, t_base);
     bool topo_intersecao = plano_topo.hitRay(p0, d, t_topo);
@@ -139,6 +145,9 @@ bool Cilindro::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSi
 
 bool Cilindro::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
 {
+  VectorXd cilDir;
+  cilDir = this->pontos.at(1) - this->pontos.at(0);
+  cilDir.normalize();
   float t_min_light;
   int side = 0;
   bool resultHit = this->hitRayGetSide(p0Light, dLight, t_min_light, side);
@@ -161,12 +170,12 @@ bool Cilindro::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLigh
     if (side == 1)
     {
       // Topo
-      n << this->u.x(), this->u.y(), this->u.z();
+      n << cilDir.x(), cilDir.y(), cilDir.z();
     }
     if (side == 2)
     {
       // Base
-      n << (-1) * this->u.x(), (-1) * this->u.y(), (-1) * this->u.z();
+      n << (-1) * cilDir.x(), (-1) * cilDir.y(), (-1) * cilDir.z();
     }
     if (side == 3)
     {
@@ -179,7 +188,7 @@ bool Cilindro::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLigh
       Eigen::Vector3d cb3d;
       cb3d << this->pontos.at(0).x(), this->pontos.at(0).y(), this->pontos.at(0).z();
       Eigen::Vector3d dc3d;
-      dc3d << this->u.x(), this->u.y(), this->u.z();
+      dc3d << cilDir.x(), cilDir.y(), cilDir.z();
 
       Eigen::Vector3d colisedPoint3d = p03d + (t_min_light * d3d);
 

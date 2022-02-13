@@ -5,7 +5,7 @@ int height, width;
 RGB **canvas;
 Cenario *cena;
 float d = 80;
-int H = 800;
+int H = 600;
 int	W = 800;
 
 GLubyte *PixelBuffer;

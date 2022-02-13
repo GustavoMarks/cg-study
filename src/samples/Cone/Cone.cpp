@@ -8,13 +8,17 @@ Cone::Cone(int id) : Objeto(id)
 
 Cone::Cone(int id, VectorXd n, float h, float r, Ponto cb) : Objeto(id)
 {
+  // n é o vetor unitário que define a direção e o sentido do eixo do cone;
   std::vector<Ponto> pontos;
   // Ponto central da base
   pontos.push_back(cb);
+
+  // Ponto do topo do cone;
+  Ponto ct{{n.x() * (cb.x() + h), n.y() * (cb.y() + h), n.z() * (cb.z() + h)}};
+  pontos.push_back(ct);
   this->pontos = pontos;
 
   n.normalize();
-  this->n = n;
   this->h = h;
   this->r = r;
 }
@@ -28,14 +32,17 @@ bool Cone::hitRay(VectorXd p0, VectorXd d, float &t_min)
 bool Cone::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
 {
   // hitedSide indica onde o cone foi atingido, 1 para lateral, 2 para base
+  VectorXd coneDir;
+  coneDir = this->pontos.at(1) - this->pontos.at(0);
+  coneDir.normalize();
   hitedSide = 1;
-  Ponto vertice = this->pontos.at(0) + (this->h * this->n);
+  Ponto vertice = this->pontos.at(0) + (this->h * coneDir);
   VectorXd v = vertice - p0;
 
   float cos2theta = std::pow(this->h / std::sqrt(std::pow(this->h, 2) + std::pow(this->r, 2)), 2);
-  float a = std::pow(d.dot(this->n), 2) - (d.dot(d) * cos2theta);
-  float b = (v.dot(d) * cos2theta) - (v.dot(this->n) * d.dot(this->n));
-  float c = std::pow(v.dot(this->n), 2) - (v.dot(v) * cos2theta);
+  float a = std::pow(d.dot(coneDir), 2) - (d.dot(d) * cos2theta);
+  float b = (v.dot(d) * cos2theta) - (v.dot(coneDir) * d.dot(coneDir));
+  float c = std::pow(v.dot(coneDir), 2) - (v.dot(v) * cos2theta);
 
   float delta = std::pow(b, 2) - a * c;
   if (delta < 0)
@@ -59,8 +66,8 @@ bool Cone::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
   Ponto p1{{p0.x() + t_int0 * d.x(), p0.y() + t_int0 * d.y(), p0.z() + t_int0 * d.z()}};
   Ponto p2{{p0.x() + t_int1 * d.x(), p0.y() + t_int1 * d.y(), p0.z() + t_int1 * d.z()}};
 
-  float p1_dotproduct = (vertice - p1).dot(this->n);
-  float p2_dotproduct = (vertice - p2).dot(this->n);
+  float p1_dotproduct = (vertice - p1).dot(coneDir);
+  float p2_dotproduct = (vertice - p2).dot(coneDir);
 
   std::vector<float> intersecoes;
 
@@ -71,7 +78,7 @@ bool Cone::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
 
   if ((int)intersecoes.size() == 1)
   {
-    Plano plano_base(0, this->pontos.at(0), this->n * (-1));
+    Plano plano_base(0, this->pontos.at(0), coneDir * (-1));
     float t_base;
     bool base_intersecao = plano_base.hitRay(p0, d, t_base);
     if (base_intersecao)
@@ -106,6 +113,9 @@ bool Cone::hitRayGetSide(VectorXd p0, VectorXd d, float &t_min, int &hitedSide)
 
 bool Cone::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
 {
+  VectorXd coneDir;
+  coneDir = this->pontos.at(1) - this->pontos.at(0);
+  coneDir.normalize();
   float t_min_light;
   int side = 0;
   bool resultHit = this->hitRayGetSide(p0Light, dLight, t_min_light, side);
@@ -116,7 +126,7 @@ bool Cone::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, E
     colisedPoint = p0Light + (t_min_light * dLight);
     Eigen::VectorXd cpvXd{{colisedPointView.x(), colisedPointView.y(), colisedPointView.z()}};
 
-    if (!colisedPoint.isApprox(cpvXd, 0.1))
+    if (!colisedPoint.isApprox(cpvXd, 0.01))
     {
       return false;
     }
@@ -125,12 +135,12 @@ bool Cone::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, E
     if (side == 2)
     {
       // Base
-      n << (-1) * this->n.x(), (-1) * this->n.y(), (-1) * this->n.z();
+      n << (-1) * coneDir.x(), (-1) * coneDir.y(), (-1) * coneDir.z();
     }
     if (side == 1)
     {
       // Lateral
-      Ponto vertice = this->pontos.at(0) + (this->h * this->n);
+      Ponto vertice = this->pontos.at(0) + (this->h * coneDir);
       Eigen::Vector3d vertice3d;
       vertice3d << vertice.x(), vertice.y(), vertice.z();
       Eigen::Vector3d p03d;
@@ -140,7 +150,7 @@ bool Cone::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, E
       Eigen::Vector3d cb3d;
       cb3d << this->pontos.at(0).x(), this->pontos.at(0).y(), this->pontos.at(0).z();
       Eigen::Vector3d dc3d;
-      dc3d << this->n.x(), this->n.y(), this->n.z();
+      dc3d << coneDir.x(), coneDir.y(), coneDir.z();
 
       Eigen::Vector3d colisedPoint = p03d + (t_min_light * d3d);
 
