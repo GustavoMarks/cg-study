@@ -1,5 +1,6 @@
 #include "../Luz/Luz.hpp"
 #include "../Camera/Camera.hpp"
+#include "../Cluster/Cluster.hpp"
 #include <vector>
 
 using std::vector;
@@ -10,7 +11,7 @@ public:
   Camera cam;
   vector<Objeto *> objs;
   vector<LuzAmbiente *> luzes;
-  Cenario(Camera cam, vector<Objeto *> objs, vector<LuzAmbiente *> luzes);
+  Cenario(Camera cam, vector<Objeto *> objs, vector<LuzAmbiente *> luzes, Cluster cluster);
   void updateCamera(Camera cam);
   Camera getCamera();
 };
