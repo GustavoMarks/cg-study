@@ -55,14 +55,14 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 	vector<FaceTriangular> faces;
 	int idFace = 0;
 	// cada quadrado tem duas faces triangulares
-	for (int i = 0; i < num_paralelos - 1; i++)
+	for (int i = 0; i < num_paralelos; i++)
 	{
-		for (int j = num_meridianos * i; j < num_meridianos * i + num_meridianos - 1; j++)
+		for (int j = (num_meridianos + 1) * i; j < (num_meridianos + 1) * i + num_meridianos; j++)
 		{
 			Ponto p_esq_inf = vertices[j];
 			Ponto p_dir_inf = vertices[j + 1];
-			Ponto p_esq_sup = vertices[j + num_meridianos];
-			Ponto p_dir_sup = vertices[j + 1 + num_meridianos];
+			Ponto p_esq_sup = vertices[j + num_meridianos + 1];
+			Ponto p_dir_sup = vertices[j + num_meridianos + 2];
 			Aresta a_diagonal = make_pair(p_esq_inf, p_dir_sup);
 
 			// face triagular inferior
@@ -78,4 +78,101 @@ CurvaBezier::CurvaBezier(int num_paralelos, int num_meridianos, Ponto p0, Ponto 
 	}
 
 	this->faces = faces;
+}
+
+void CurvaBezier::transladar(Ponto t)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).transladar(t);
+    }
+}
+
+void CurvaBezier::rotacionar(int plan, double ang)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).rotacionar(plan, ang);
+    }
+}
+
+void CurvaBezier::rotacionar(Ponto P1, Ponto P2, double ang)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).rotacionar(P1, P2, ang);
+    }
+}
+
+void CurvaBezier::escalar(double sx, double sy, double sz)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).escalar(sx, sy, sz);
+    }
+}
+
+void CurvaBezier::cisalhar(double ang_onX_planXYZ)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).cisalhar(ang_onX_planXYZ);
+    }
+}
+
+void CurvaBezier::refletir(int plan)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).refletir(plan);
+    }
+}
+
+void CurvaBezier::refletir(Ponto A, Ponto B, Ponto C)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).refletir(A, B, C);
+    }
+}
+
+bool CurvaBezier::hitRay(VectorXd p0, VectorXd d, float &t_min)
+{
+    bool result = false;
+    float aux = 100000000000000;
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        bool localResult = this->faces.at(i).hitRay(p0, d, t_min);
+        if (localResult)
+        {
+            result = localResult;
+            if (aux < t_min)
+                t_min = aux;
+            else
+                aux = t_min;
+        }
+    }
+
+    return result;
+}
+
+bool CurvaBezier::hitLight(Ponto colisedPointView, VectorXd p0Light, VectorXd dLight, Eigen::Vector3d &n)
+{
+    bool result = false;
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        bool localResult = this->faces.at(i).hitLight(colisedPointView, p0Light, dLight, n);
+        if (localResult)
+            result = localResult;
+    }
+
+    return result;
+}
+
+void CurvaBezier::cameraTransform(Eigen::Matrix4d mwc)
+{
+    for (int i = 0; i < this->faces.size(); i++)
+    {
+        this->faces.at(i).cameraTransform(mwc);
+    }
 }
