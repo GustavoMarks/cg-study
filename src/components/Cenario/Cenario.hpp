@@ -9,6 +9,7 @@ class Cenario
 {
 public:
   Camera cam;
+  Cluster cluster;
   vector<Objeto *> objs;
   vector<LuzAmbiente *> luzes;
   Cenario(Camera cam, vector<Objeto *> objs, vector<LuzAmbiente *> luzes, Cluster cluster);
