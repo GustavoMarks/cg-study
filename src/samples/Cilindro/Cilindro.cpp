@@ -16,7 +16,7 @@ Cilindro::Cilindro(int id, Ponto b, VectorXd u, float h, float r) : Objeto(id)
   pontos.push_back(b);
 
   // Ponto do topo do cilindro;
-  Ponto ct{{u.x() * (b.x() + h), u.y() * (b.y() + h), u.z() * (b.z() + h)}};
+  Ponto ct{{(u.x() * h) + b.x(), (u.y() * h) + b.y(), (u.z() * h) + b.z()}};
   pontos.push_back(ct);
   this->pontos = pontos;
 

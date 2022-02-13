@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     // fteste->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
     // Montando câmera
-    Ponto eye{{0, 0, 12}};
+    Ponto eye{{0, 6, 20}};
     Ponto la{{0, 0, 1}};
     Ponto lu{{0, 100, 0}};
     Camera *cam = new Camera(eye, la, lu);
@@ -95,11 +95,62 @@ int main(int argc, char **argv)
     Esfera *esf_topo_peao = new Esfera(idController->generateNewUID(), p_topo_peao, 4);
     esf_topo_peao->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
 
+    Ponto toTranslate{{50, 0, 0}};
+    con_corpo1_peao->transladar(toTranslate);
+    cil_base1_peao->transladar(toTranslate);
+    cil_base2_peao->transladar(toTranslate);
+    cil_corpo2_peao->transladar(toTranslate);
+    esf_topo_peao->transladar(toTranslate);
+
     objList.push_back(con_corpo1_peao);
     objList.push_back(cil_base1_peao);
     objList.push_back(cil_base2_peao);
     objList.push_back(cil_corpo2_peao);
     objList.push_back(esf_topo_peao);
+
+    // Montando uma torre
+    Ponto p_baseTorre{{0, 0, 0}};
+    Cilindro *cil_base1_torre = new Cilindro(idController->generateNewUID(), p_baseTorre, eixo_pecas, 4, 8);
+    cil_base1_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_base2_torre = new Cilindro(idController->generateNewUID(), p_baseTorre, eixo_pecas, 8, 6);
+    cil_base2_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_incio_corpo1_torre{{0, 7, 0}};
+    Cone *con_corpo1_torre = new Cone(idController->generateNewUID(), eixo_pecas, 26, 6, p_incio_corpo1_torre);
+    con_corpo1_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo_torre{{0, 26, 0}};
+    Cilindro *cil_topo_torre = new Cilindro(idController->generateNewUID(), p_topo_torre, eixo_pecas, 4, 4);
+    cil_topo_torre->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    Ponto toTranslateTorre{{25, 0, 0}};
+    con_corpo1_torre->transladar(toTranslateTorre);
+    cil_base1_torre->transladar(toTranslateTorre);
+    cil_base2_torre->transladar(toTranslateTorre);
+    cil_topo_torre->transladar(toTranslateTorre);
+
+    objList.push_back(con_corpo1_torre);
+    objList.push_back(cil_base1_torre);
+    objList.push_back(cil_base2_torre);
+    objList.push_back(cil_topo_torre);
+
+    // Montando um "cavalo"
+    Ponto p_baseCavalo{{0, 0, 0}};
+    Cilindro *cil_base1_cavalo = new Cilindro(idController->generateNewUID(), p_baseCavalo, eixo_pecas, 4, 8);
+    cil_base1_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Cilindro *cil_base2_cavalo = new Cilindro(idController->generateNewUID(), p_baseCavalo, eixo_pecas, 8, 6);
+    cil_base2_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_incio_corpo1_cavalo{{0, 7, 0}};
+    Eigen::VectorXd eixo_corpo_cavalo{{0.2, 1, 0}};
+    Cone *con_corpo1_cavalo = new Cone(idController->generateNewUID(), eixo_corpo_cavalo, 26, 6, p_incio_corpo1_cavalo);
+    con_corpo1_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    Ponto p_topo_cavalo{{4, 28, 0}};
+    Eigen::VectorXd eixo_cabeca_cavalo{{-1, 0, 0}};
+    Cilindro *cil_topo_cavalo = new Cilindro(idController->generateNewUID(), p_topo_cavalo, eixo_cabeca_cavalo, 8, 3);
+    cil_topo_cavalo->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+
+    objList.push_back(con_corpo1_cavalo);
+    objList.push_back(cil_base1_cavalo);
+    objList.push_back(cil_base2_cavalo);
+    objList.push_back(cil_topo_cavalo);
 
     // Descrevendo luzes
     vector<LuzAmbiente *> luzList;

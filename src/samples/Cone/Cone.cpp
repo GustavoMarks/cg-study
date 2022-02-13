@@ -14,7 +14,7 @@ Cone::Cone(int id, VectorXd n, float h, float r, Ponto cb) : Objeto(id)
   pontos.push_back(cb);
 
   // Ponto do topo do cone;
-  Ponto ct{{n.x() * (cb.x() + h), n.y() * (cb.y() + h), n.z() * (cb.z() + h)}};
+  Ponto ct{{cb.x() + (h * n.x()), cb.y() + (h * n.y()), cb.z() + (h * n.z())}};
   pontos.push_back(ct);
   this->pontos = pontos;
 
