@@ -2,18 +2,18 @@
 
 using namespace std;
 
-Cubo::Cubo(int id, double side)
+Cubo::Cubo(int id, float width, float height, float depth)
     : Objeto(id)
 {
     // Montando um cubo na origem do sistema
     Ponto p1{{0, 0, 0}};
-    Ponto p2{{side, 0, 0}};
-    Ponto p3{{side, 0, side}};
-    Ponto p4{{0, 0, side}};
-    Ponto p5{{0, side, 0}};
-    Ponto p6{{side, side, 0}};
-    Ponto p7{{side, side, side}};
-    Ponto p8{{0, side, side}};
+    Ponto p2{{width, 0, 0}};
+    Ponto p3{{width, 0, depth}};
+    Ponto p4{{0, 0, depth}};
+    Ponto p5{{0, height, 0}};
+    Ponto p6{{width, height, 0}};
+    Ponto p7{{width, height, depth}};
+    Ponto p8{{0, height, depth}};
 
     vector<FaceTriangular> faces;
     // Faces traseiras

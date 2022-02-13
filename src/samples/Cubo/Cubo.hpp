@@ -4,7 +4,7 @@ private:
 public:
     double side;
     vector<FaceTriangular> faces;
-    Cubo(int id, double side);
+    Cubo(int id, float width, float height, float depth);
 
     void transladar(Ponto t);
     void rotacionar(int plan, double ang);
