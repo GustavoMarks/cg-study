@@ -38,6 +38,8 @@ void montarTabuleiro(Cluster &mainCluster)
     Ponto transOrigemCubo{{-120, -7, -120}};
     tabMadeira->transladar(transOrigemCubo);
 
+    // tabMadeira->escalar(0.5, 0.5, 0.5);
+
     // Criando cluster para abrigar todas as casas do tabuleiro
     Eigen::VectorXd eixoCluster{{0, 1, 0}};
     Ponto baseClusterTab{{0, -8, 0}};
