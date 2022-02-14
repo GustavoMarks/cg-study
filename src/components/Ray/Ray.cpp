@@ -15,7 +15,7 @@ Ray::Ray(Ponto p0, Ponto d)
 void obterObjetosCluster(Cluster cluster, vector<Objeto *> &objs, Ponto p0, VectorXd d)
 {
   float t_min = 123456;
-  if (cluster.obj_geometrico.hitRay(p0, d, t_min))
+  if (cluster.obj_geometrico->hitRay(p0, d, t_min))
   {
     if (cluster.clusters_filho.size() != 0)
     {

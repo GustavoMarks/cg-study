@@ -4,7 +4,7 @@
 int height, width;
 RGB **canvas;
 Cenario *cena;
-float d = 80;
+float d = 400;
 int H = 600;
 int	W = 800;
 

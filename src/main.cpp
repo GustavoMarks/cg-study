@@ -29,7 +29,7 @@ RGBIntesity *silverSpec = new RGBIntesity(0.77, 0.77, 0.77);
 
 IDController *idController = new IDController();
 
-void montarTabuleiro(vector<Objeto *> &objList)
+void montarTabuleiro(Cluster &mainCluster)
 {
     // Criando tabuleiro de madeira
     Cubo *tabMadeira = new Cubo(idController->generateNewUID(), 240, 6, 240);
@@ -38,7 +38,17 @@ void montarTabuleiro(vector<Objeto *> &objList)
     Ponto transOrigemCubo{{-120, -7, -120}};
     tabMadeira->transladar(transOrigemCubo);
 
-    objList.push_back(tabMadeira);
+    // Criando cluster para abrigar todas as casas do tabuleiro
+    Eigen::VectorXd eixoCluster{{0, 1, 0}};
+    Ponto baseClusterTab{{0, -8, 0}};
+    Cilindro *cil_para_cluster = new Cilindro(0, baseClusterTab, eixoCluster, 7, 300);
+    Cluster *clusterTab = new Cluster(cil_para_cluster);
+
+    clusterTab->addObjeto(tabMadeira);
+
+    Ponto baseClusterCasa{{0, -1, 0}};
+    Cilindro *cil_para_cluster2 = new Cilindro(0, baseClusterCasa, eixoCluster, 3, 240);
+    Cluster *clusterCasa = new Cluster(cil_para_cluster2);
 
     // Criando casas de plástico preto e pérola de forma iterativa
     bool isWhite = false;
@@ -57,13 +67,13 @@ void montarTabuleiro(vector<Objeto *> &objList)
                 FaceTriangular *f1 = new FaceTriangular(idController->generateNewUID(), p1, p2, p3);
                 f1->setMaterial(*blackPlasticAmb, *blackPlasticDif, *blackPlasticSpec, 32);
 
-                objList.push_back(f1);
+                clusterCasa->addObjeto(f1);
 
                 Ponto p4{{aux + 24, 0, zCoord + 24}};
                 FaceTriangular *f2 = new FaceTriangular(idController->generateNewUID(), p2, p4, p3);
                 f2->setMaterial(*blackPlasticAmb, *blackPlasticDif, *blackPlasticSpec, 32);
 
-                objList.push_back(f2);
+                clusterCasa->addObjeto(f2);
             }
             else
             {
@@ -89,9 +99,12 @@ void montarTabuleiro(vector<Objeto *> &objList)
         isWhite = !isWhite;
         zCoord = zCoord + 24;
     }
+
+    mainCluster.addCluster(*clusterTab);
+    mainCluster.addCluster(*clusterCasa);
 }
 
-void montarPecas(vector<Objeto *> &objList)
+void montarPecas(Cluster &mainCluster)
 {
     Eigen::VectorXd eixo_pecas{{0, 1, 0}};
 
@@ -118,11 +131,17 @@ void montarPecas(vector<Objeto *> &objList)
     cil_corpo2_peao->transladar(toTranslate);
     esf_topo_peao->transladar(toTranslate);
 
-    objList.push_back(con_corpo1_peao);
-    objList.push_back(cil_base1_peao);
-    objList.push_back(cil_base2_peao);
-    objList.push_back(cil_corpo2_peao);
-    objList.push_back(esf_topo_peao);
+    Cilindro *cil_cluster_p1 = new Cilindro(0, p_basePeao, eixo_pecas, 29, 9);
+    cil_cluster_p1->transladar(toTranslate);
+    Cluster *p1 = new Cluster(cil_cluster_p1);
+
+    p1->addObjeto(con_corpo1_peao);
+    p1->addObjeto(cil_base1_peao);
+    p1->addObjeto(cil_base2_peao);
+    p1->addObjeto(cil_corpo2_peao);
+    p1->addObjeto(esf_topo_peao);
+
+    mainCluster.addCluster(*p1);
 
     Cone *con_corpo1_peao4 = new Cone(idController->generateNewUID(), eixo_pecas, 16, 4, p_incio_corpo1_peao);
     con_corpo1_peao4->setMaterial(*perlAmb, *perlDif, *perlSpec, 11);
@@ -131,7 +150,7 @@ void montarPecas(vector<Objeto *> &objList)
     Cilindro *cil_base2_peao4 = new Cilindro(idController->generateNewUID(), p_basePeao, eixo_pecas, 8, 6);
     cil_base2_peao4->setMaterial(*perlAmb, *perlDif, *perlSpec, 11);
     Cilindro *cil_corpo2_peao4 = new Cilindro(idController->generateNewUID(), p_corpo2_peao, eixo_pecas, 1, 4);
-    cil_base1_peao4->setMaterial(*perlAmb, *perlDif, *perlSpec, 11);
+    cil_corpo2_peao4->setMaterial(*perlAmb, *perlDif, *perlSpec, 11);
     Esfera *esf_topo_peao4 = new Esfera(idController->generateNewUID(), p_topo_peao, 4);
     esf_topo_peao4->setMaterial(*perlAmb, *perlDif, *perlSpec, 11);
 
@@ -152,11 +171,19 @@ void montarPecas(vector<Objeto *> &objList)
     cil_corpo2_peao4->refletir(0);
     esf_topo_peao4->refletir(0);
 
-    objList.push_back(con_corpo1_peao4);
-    objList.push_back(cil_base1_peao4);
-    objList.push_back(cil_base2_peao4);
-    objList.push_back(cil_corpo2_peao4);
-    objList.push_back(esf_topo_peao4);
+    Cilindro *cil_cluster_p2 = new Cilindro(0, p_basePeao, eixo_pecas, 29, 9);
+    cil_cluster_p2->transladar(toTranslate);
+    cil_cluster_p2->refletir(2);
+    cil_cluster_p2->refletir(0);
+    Cluster *p2 = new Cluster(cil_cluster_p2);
+
+    p2->addObjeto(con_corpo1_peao4);
+    p2->addObjeto(cil_base1_peao4);
+    p2->addObjeto(cil_base2_peao4);
+    p2->addObjeto(cil_corpo2_peao4);
+    p2->addObjeto(esf_topo_peao4);
+
+    mainCluster.addCluster(*p2);
 
     // Montando uma torre
     Ponto p_baseTorre{{0, 0, 0}};
@@ -177,10 +204,16 @@ void montarPecas(vector<Objeto *> &objList)
     cil_base2_torre->transladar(toTranslateTorre);
     cil_topo_torre->transladar(toTranslateTorre);
 
-    objList.push_back(con_corpo1_torre);
-    objList.push_back(cil_base1_torre);
-    objList.push_back(cil_base2_torre);
-    objList.push_back(cil_topo_torre);
+    Cilindro *cil_cluster_t1 = new Cilindro(0, p_basePeao, eixo_pecas, 33, 9);
+    cil_cluster_t1->transladar(toTranslateTorre);
+    Cluster *t1 = new Cluster(cil_cluster_t1);
+
+    t1->addObjeto(con_corpo1_torre);
+    t1->addObjeto(cil_base1_torre);
+    t1->addObjeto(cil_base2_torre);
+    t1->addObjeto(cil_topo_torre);
+
+    mainCluster.addCluster(*t1);
 
     // Montando um "cavalo"
     Ponto p_baseCavalo{{0, 0, 0}};
@@ -203,10 +236,16 @@ void montarPecas(vector<Objeto *> &objList)
     cil_base2_cavalo->transladar(toTranslateCavalo);
     cil_topo_cavalo->transladar(toTranslateCavalo);
 
-    objList.push_back(con_corpo1_cavalo);
-    objList.push_back(cil_base1_cavalo);
-    objList.push_back(cil_base2_cavalo);
-    objList.push_back(cil_topo_cavalo);
+    Cilindro *cil_cluster_c1 = new Cilindro(0, p_basePeao, eixo_pecas, 33, 11);
+    cil_cluster_c1->transladar(toTranslateCavalo);
+    Cluster *c1 = new Cluster(cil_cluster_c1);
+
+    c1->addObjeto(con_corpo1_cavalo);
+    c1->addObjeto(cil_base1_cavalo);
+    c1->addObjeto(cil_base2_cavalo);
+    c1->addObjeto(cil_topo_cavalo);
+
+    mainCluster.addCluster(*c1);
 
     // Montando um bispo
     Ponto p_baseBispo{{0, 0, 0}};
@@ -235,12 +274,18 @@ void montarPecas(vector<Objeto *> &objList)
     esf_topo_bispo->transladar(toTranslateBispo);
     con_topo2_bispo->transladar(toTranslateBispo);
 
-    objList.push_back(con_corpo1_bispo);
-    objList.push_back(cil_base1_bispo);
-    objList.push_back(cil_base2_bispo);
-    objList.push_back(cil_corpo2_bispo);
-    objList.push_back(esf_topo_bispo);
-    objList.push_back(con_topo2_bispo);
+    Cilindro *cil_cluster_b1 = new Cilindro(0, p_basePeao, eixo_pecas, 37, 9);
+    cil_cluster_b1->transladar(toTranslateBispo);
+    Cluster *b1 = new Cluster(cil_cluster_b1);
+
+    b1->addObjeto(con_corpo1_bispo);
+    b1->addObjeto(cil_base1_bispo);
+    b1->addObjeto(cil_base2_bispo);
+    b1->addObjeto(cil_corpo2_bispo);
+    b1->addObjeto(esf_topo_bispo);
+    b1->addObjeto(con_topo2_bispo);
+
+    mainCluster.addCluster(*b1);
 
     // Montando uma rainha
     Ponto p_baseRainha{{0, 0, 0}};
@@ -269,12 +314,18 @@ void montarPecas(vector<Objeto *> &objList)
     esf_topo_rainha->transladar(toTranslateRainha);
     con_topo1_rainha->transladar(toTranslateRainha);
 
-    objList.push_back(con_corpo1_rainha);
-    objList.push_back(cil_base1_rainha);
-    objList.push_back(cil_base2_rainha);
-    objList.push_back(cil_corpo2_rainha);
-    objList.push_back(esf_topo_rainha);
-    objList.push_back(con_topo1_rainha);
+    Cilindro *cil_cluster_r1 = new Cilindro(0, p_basePeao, eixo_pecas, 37, 9);
+    cil_cluster_r1->transladar(toTranslateRainha);
+    Cluster *r1 = new Cluster(cil_cluster_r1);
+
+    r1->addObjeto(con_corpo1_rainha);
+    r1->addObjeto(cil_base1_rainha);
+    r1->addObjeto(cil_base2_rainha);
+    r1->addObjeto(cil_corpo2_rainha);
+    r1->addObjeto(esf_topo_rainha);
+    r1->addObjeto(con_topo1_rainha);
+
+    mainCluster.addCluster(*r1);
 
     // Montando um rei
     Ponto p_baseRei{{0, 0, 0}};
@@ -308,13 +359,19 @@ void montarPecas(vector<Objeto *> &objList)
     cil_topo2_rei->transladar(toTranslateRei);
     cil_topo3_rei->transladar(toTranslateRei);
 
-    objList.push_back(con_corpo1_rei);
-    objList.push_back(cil_base1_rei);
-    objList.push_back(cil_base2_rei);
-    objList.push_back(cil_corpo2_rei);
-    objList.push_back(con_topo1_rei);
-    objList.push_back(cil_topo2_rei);
-    objList.push_back(cil_topo3_rei);
+    Cilindro *cil_cluster_r2 = new Cilindro(0, p_basePeao, eixo_pecas, 44, 9);
+    cil_cluster_r2->transladar(toTranslateRei);
+    Cluster *r2 = new Cluster(cil_cluster_r2);
+
+    r2->addObjeto(con_corpo1_rei);
+    r2->addObjeto(cil_base1_rei);
+    r2->addObjeto(cil_base2_rei);
+    r2->addObjeto(cil_corpo2_rei);
+    r2->addObjeto(con_topo1_rei);
+    r2->addObjeto(cil_topo2_rei);
+    r2->addObjeto(cil_topo3_rei);
+
+    mainCluster.addCluster(*r2);
 }
 
 int main(int argc, char **argv)
@@ -322,7 +379,7 @@ int main(int argc, char **argv)
     IDController *idController = new IDController();
 
     // Montando câmera
-    Ponto eye{{30, 70, 90}};
+    Ponto eye{{0, 40, 120}};
     // Ponto eye{{0, 10, 20}};
     Ponto la{{0, 0, 1}};
     Ponto lu{{0, 100, 0}};
@@ -331,14 +388,11 @@ int main(int argc, char **argv)
     vector<Objeto *> objList;
 
     // Criando cilindro para cluster principal
-    Ponto baseCilCluster{{0, -40, 0}};
+    Ponto baseCilCluster{{0, -210, 0}};
     Eigen::VectorXd dirCilCluster{{0, 1, 0}};
     // Cluster principal
-    Cilindro *cil_para_cluster = new Cilindro(0, baseCilCluster, dirCilCluster, 100, 200);
-    Cluster *mainCluster = new Cluster(*cil_para_cluster);
-
-    montarTabuleiro(objList);
-    montarPecas(objList);
+    Cilindro *cil_para_cluster = new Cilindro(0, baseCilCluster, dirCilCluster, 360, 210);
+    Cluster *mainCluster = new Cluster(cil_para_cluster);
 
     // Montando mesa de prata
     Ponto baseMesaPrata{{0, -8, 0}};
@@ -348,8 +402,31 @@ int main(int argc, char **argv)
     Cilindro *cil_aste_prata = new Cilindro(idController->generateNewUID(), baseMesaPrata, dirMesaPrata, 200, 20);
     cil_aste_prata->setMaterial(*silverAmb, *silverDif, *silverSpec, 89);
 
-    objList.push_back(cil_mesa_prata);
-    objList.push_back(cil_aste_prata);
+    Cilindro *cil_to_cluster = new Cilindro(0, baseMesaPrata, dirMesaPrata, 200, 200);
+    Cluster *cluster_mesa = new Cluster(cil_to_cluster);
+    cluster_mesa->addObjeto(cil_mesa_prata);
+    cluster_mesa->addObjeto(cil_aste_prata);
+
+    mainCluster->addCluster(*cluster_mesa);
+
+    montarTabuleiro(*mainCluster);
+    montarPecas(*mainCluster);
+
+    // Criando jarro decorativo
+    Ponto p0j{{10, 0, 0}};
+    Ponto p1j{{20, 20, 0}};
+    Ponto p2j{{0, 50, 0}};
+    Ponto p3j{{18, 70, 0}};
+    CurvaBezier *jarro = new CurvaBezier(20, 20, p0j, p1j, p2j, p3j, 0);
+    jarro->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
+    // jarro->escalar(10, 10, 10);
+
+    Cilindro *cil_to_cluster_j = new Cilindro(0, p0j, dirMesaPrata * (-1), 70, 80);
+    // cil_to_cluster_j->escalar(10, 10, 10);
+    Cluster *cluster_jarro = new Cluster(cil_to_cluster_j);
+    cluster_jarro->addObjeto(jarro);
+
+    // mainCluster->addCluster(*cluster_jarro);
 
     // Descrevendo luzes
     vector<LuzAmbiente *> luzList;
