@@ -12,7 +12,7 @@ Ray::Ray(Ponto p0, Ponto d)
   this->d = d;
 }
 
-void obterObjetosCluster(Cluster cluster, vector<Objeto *> objs, Ponto p0, VectorXd d)
+void obterObjetosCluster(Cluster cluster, vector<Objeto *> &objs, Ponto p0, VectorXd d)
 {
   float t_min = 123456;
   if (cluster.obj_geometrico.hitRay(p0, d, t_min))
@@ -45,6 +45,10 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
 
   vector<Objeto *> objs;
   obterObjetosCluster(cenario.cluster, objs, this->p0, this->d);
+  for (int i = 0; i < cenario.objs.size(); i++)
+  {
+    objs.push_back(cenario.objs.at(i));
+  }
 
   for (int i = 0; i < objs.size(); i++)
   {

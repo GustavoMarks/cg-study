@@ -11,4 +11,5 @@ public:
   Cluster(Objeto obj_geometrico);
   void addCluster(Cluster cluster_filho);
   void addObjeto(Objeto obj_filho);
+  void cameraTransform(Eigen::Matrix4d mwc);
 };

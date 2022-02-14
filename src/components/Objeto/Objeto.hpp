@@ -14,7 +14,7 @@ public:
   Objeto(int id, std::vector<Ponto> pontos);
 
   virtual void transladar(Ponto t);
-  virtual void rotacionar(int plan, double ang);
+  virtual void rotacionar(int axis, double ang);
   virtual void rotacionar(Ponto P1, Ponto P2, double ang);
   virtual void escalar(double sx, double sy, double sz);
   virtual void cisalhar(double ang_onX_planXYZ);
