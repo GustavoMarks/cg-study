@@ -4,6 +4,8 @@
 class LuzAmbiente
 {
 public:
+	Eigen::Vector3d df;
+	double ang;
 	RGBIntesity i;
 	int luzType = 1;
 	LuzAmbiente(RGBIntesity i);

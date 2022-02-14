@@ -7,6 +7,7 @@ Cenario *cena;
 float d = 400;
 int H = 600;
 int	W = 800;
+bool isOrto = false;
 
 GLubyte *PixelBuffer;
 
@@ -99,7 +100,7 @@ Window::Window(int argc, char **argv, int setWidth, int setHeight, const char *t
 	height = setHeight;
 	width = setWidth;
 	cena = setCena;
-	canvas = rayCasting(*cena, d, H, W, 600, 800);
+	canvas = rayCasting(*cena, d, H, W, 600, 800, isOrto);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);

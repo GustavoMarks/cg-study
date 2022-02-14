@@ -16,19 +16,20 @@ Eigen::Vector3d LuzSpot::getLightToPoint(Ponto p)
 	Ponto Pdifs = this->pf - p;
 	Eigen::Vector3d L;
 	L << Pdifs.x(), Pdifs.y(), Pdifs.y();
-	L = L / L.norm();
+	L.normalize();
 
-	Eigen::Vector3d l;
-	l = (1) * L;
+	// Eigen::Vector3d l;
+	// l = (1) * L;
 
-	double cosAlf;
+	// double cosAlf;
 
-	cosAlf = l.dot(this->df) / l.norm() * this->df.norm();
-	if (cosAlf > cos(this->ang * PI / 180.0))
-	{
-		return L * 0;
-	}
-	return L * cosAlf;
+	// cosAlf = l.dot(this->df) / l.norm() * this->df.norm();
+	// if (cosAlf > cos(this->ang * PI / 180.0))
+	// {
+	// 	return L * 0;
+	// }
+	// return L * cosAlf;
+	return L;
 }
 
 void LuzSpot::cameraTransform(Eigen::Matrix4d mwc)

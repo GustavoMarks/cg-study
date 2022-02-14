@@ -3,7 +3,7 @@
 
 using namespace std;
 
-RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas)
+RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolunas, bool isOrto)
 {
   RGB **canvas;
   canvas = new RGB *[nlinhas];
@@ -22,7 +22,9 @@ RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
     {
       // plc(0) = p00x + (c * deltaX);
       Ponto plc{{p00x + (c * deltaX), p00y - (l * deltaY), -d}};
-      Ray raio(cenario.cam.eye, plc);
+      Ponto plcPartidaOrto{{p00x + (c * deltaX), p00y - (l * deltaY), 0}};
+      Ponto partida = isOrto ? plcPartidaOrto : cenario.cam.eye;
+      Ray raio(partida, plc);
       RGBIntesity *I = new RGBIntesity();
       bool intersecao = raio.computarIntersecao(cenario, *I);
 

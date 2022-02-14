@@ -379,10 +379,10 @@ int main(int argc, char **argv)
     IDController *idController = new IDController();
 
     // Montando câmera
-    Ponto eye{{0, 40, 120}};
-    // Ponto eye{{0, 10, 20}};
+    Ponto eye{{0, 40, 210}};
     Ponto la{{0, 0, 1}};
     Ponto lu{{0, 100, 0}};
+
     Camera *cam = new Camera(eye, la, lu);
 
     vector<Objeto *> objList;
@@ -401,6 +401,7 @@ int main(int argc, char **argv)
     cil_mesa_prata->setMaterial(*silverAmb, *silverDif, *silverSpec, 89);
     Cilindro *cil_aste_prata = new Cilindro(idController->generateNewUID(), baseMesaPrata, dirMesaPrata, 200, 20);
     cil_aste_prata->setMaterial(*silverAmb, *silverDif, *silverSpec, 89);
+    cil_aste_prata->escalar(1.2, 1, 1.2);
 
     Cilindro *cil_to_cluster = new Cilindro(0, baseMesaPrata, dirMesaPrata, 200, 200);
     Cluster *cluster_mesa = new Cluster(cil_to_cluster);
@@ -417,9 +418,9 @@ int main(int argc, char **argv)
     Ponto p1j{{20, 20, 0}};
     Ponto p2j{{0, 50, 0}};
     Ponto p3j{{18, 70, 0}};
-    CurvaBezier *jarro = new CurvaBezier(20, 20, p0j, p1j, p2j, p3j, 0);
+    CurvaBezier *jarro = new CurvaBezier(8, 8, p0j, p1j, p2j, p3j, 0);
     jarro->setMaterial(*goldMaterialAmb, *goldMaterialDif, *goldMaterialSpec, 1);
-    // jarro->escalar(10, 10, 10);
+    // objList.push_back(jarro);
 
     Cilindro *cil_to_cluster_j = new Cilindro(0, p0j, dirMesaPrata * (-1), 70, 80);
     // cil_to_cluster_j->escalar(10, 10, 10);
@@ -438,12 +439,15 @@ int main(int argc, char **argv)
     ldr << -1, -1, 0;
     LuzDirecional *luzDirBranca = new LuzDirecional(*luzBranca, ldr);
 
-    Ponto pontoDeLuz{{100, 100, 100}};
+    Ponto pontoDeLuz{{-100, 100, 100}};
     LuzPontual *luzPontualBranca = new LuzPontual(*luzBranca, pontoDeLuz);
+    Ponto pontoDeLuzSpot{{0, 100, 0}};
+    LuzSpot *luzSpotBranca = new LuzSpot(*luzBranca, pontoDeLuzSpot, dirMesaPrata, 20);
 
     luzList.push_back(luzAmbienteBranca);
     luzList.push_back(luzDirBranca);
-    // luzList.push_back(luzPontualBranca);
+    luzList.push_back(luzPontualBranca);
+    // luzList.push_back(luzSpotBranca);
 
     Cenario *cena = new Cenario(*cam, objList, luzList, *mainCluster);
 

@@ -4,6 +4,7 @@
 
 using namespace std;
 int infinito = 10000;
+#define PI 3.14159265
 
 Ray::Ray(Ponto p0, Ponto d)
 {
@@ -129,6 +130,24 @@ bool Ray::computarIntersecao(Cenario cenario, RGBIntesity &I)
           fas = specularV.dot(specularR);
           fas = pow(fas, finded->m);
           fas = fas < 0 ? 0 : fas;
+
+          if (luzAtual->luzType == 4)
+          {
+            Eigen::Vector3d lightDir3d;
+            lightDir3d << lightDir.x(), lightDir.y(), lightDir.z();
+            float cosAlfa = lightDir3d.dot(luzAtual->df) * (-1);
+
+            if (cosAlfa > cos(luzAtual->ang * PI / 180.0))
+            {
+              fas = fas * cosAlfa;
+              fad = fad * cosAlfa;
+            }
+            else
+            {
+              fas = 0;
+              fad = 0;
+            }
+          }
 
           RGBIntesity Id = luzAtual->i.atenuar(fad);
           I = I.sum(finded->kd.cross(Id));
