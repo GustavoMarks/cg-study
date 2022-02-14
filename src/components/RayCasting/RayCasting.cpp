@@ -24,6 +24,9 @@ RGB **rayCasting(Cenario cenario, float d, int H, int W, int nlinhas, int ncolun
       Ponto plc{{p00x + (c * deltaX), p00y - (l * deltaY), -d}};
       Ponto plcPartidaOrto{{p00x + (c * deltaX), p00y - (l * deltaY), 0}};
       Ponto partida = isOrto ? plcPartidaOrto : cenario.cam.eye;
+      Ponto kc = cenario.cam.eye - cenario.cam.look_at;
+      kc.normalize();
+      plc = isOrto ? (-1) * kc : plc;
       Ray raio(partida, plc);
       RGBIntesity *I = new RGBIntesity();
       bool intersecao = raio.computarIntersecao(cenario, *I);

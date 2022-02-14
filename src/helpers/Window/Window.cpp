@@ -6,7 +6,7 @@ RGB **canvas;
 Cenario *cena;
 float d = 400;
 int H = 600;
-int	W = 800;
+int W = 800;
 bool isOrto = false;
 
 GLubyte *PixelBuffer;
